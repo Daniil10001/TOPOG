@@ -8,7 +8,7 @@
         <StackLayout PropertyChanged="PropertyChanged">
             <StackLayout Orientation="Horizontal">
                 <StackLayout Orientation="Vertical">
-                    <Button Clicked="Создать" Text="Новый пикет"/>
+                    <Button Clicked="Create" Text="Новый пикет"/>
                 </StackLayout>
                 <StackLayout Orientation="Vertical">
                     <Entry Placeholder="Начальный пикет" x:Name="NachP" TextChanged="TextChanged"/>

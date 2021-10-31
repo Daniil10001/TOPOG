@@ -48,7 +48,6 @@ namespace TOPOG.Views
                 Picets.ItemsSource = null;
                 Picets.ItemsSource = prd;
                 this.BindingContext = this;
-                prd = null;
             }
         }
 

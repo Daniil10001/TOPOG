@@ -39,7 +39,7 @@
                 </Grid>
                 <Grid>
                     <Button Text="Сохранить" Grid.Row="0" Grid.Column="0" Clicked="Save"/>
-                    <Button Text="Отмена"  Grid.Row="0" Grid.Column="1" Clicked="Cose"/>
+                    <Button Text="Отмена"  Grid.Row="0" Grid.Column="1" Clicked="Close"/>
                 </Grid>
             </StackLayout>
         </Frame>
