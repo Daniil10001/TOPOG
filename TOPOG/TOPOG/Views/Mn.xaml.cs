@@ -51,7 +51,7 @@ namespace TOPOG.Views
             Semka s = JsonConvert.DeserializeObject<Semka>(File.ReadAllText(c.PathA));
             App.Current.Properties["Semka"] = s;
             Pt.Text = "Статус:ОК";
-            await Shell.Current.GoToAsync("//Abris");
+            await Shell.Current.GoToAsync("//Map");
         }
         public void Del(object sender, EventArgs e)
         {

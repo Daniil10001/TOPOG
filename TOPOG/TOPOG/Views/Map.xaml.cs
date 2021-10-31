@@ -60,7 +60,7 @@ namespace TOPOG.Views
         {
             App.Current.Properties["IC"] = false;
             await Navigation.PushPopupAsync(new ToastPicet(new Predst(new Izm(0, 0, 0), "", "", 0)));
-            while (!(bool)App.Current.Properties["IC"]) Task.Delay(100);
+            while (!(bool)App.Current.Properties["IC"]) await Task.Delay(100);
             Predst prd = (Predst)App.Current.Properties["Rv"];
             if (sm.pereh.ContainsKey(prd.ot)) sm.pereh[prd.ot] = new HashSet<string>();
             sm.pereh[prd.ot].Add(prd.to);
