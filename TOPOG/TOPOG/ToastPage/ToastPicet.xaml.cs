@@ -44,7 +44,7 @@ namespace TOPOG.ToastPage
 
         private void Close(object sender, EventArgs e)
         {
-            App.Current.Properties["Rv"] = new Predst(new Izm(Convert.ToInt32(xo), Convert.ToInt32(yo), Convert.ToInt32(zo)),Ot.Text,To.Text,k);
+            App.Current.Properties["Rv"] = new Predst(new Izm(Convert.ToDouble(xo), Convert.ToDouble(yo), Convert.ToDouble(zo)),Ot.Text,To.Text,k);
         }
 
         private void Save(object sender, EventArgs e)

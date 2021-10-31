@@ -59,6 +59,7 @@ namespace TOPOG.Views
         private async void Create(object sender, EventArgs e)
         {
             await Navigation.PushPopupAsync(new ToastPicet(new Predst(new Izm(0, 0, 0), "", "", 0)));
+
             Predst prd = (Predst)App.Current.Properties["Rv"];
             if (sm.pereh.ContainsKey(prd.ot))
             {
