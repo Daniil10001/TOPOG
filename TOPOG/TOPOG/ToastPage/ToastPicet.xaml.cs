@@ -1,4 +1,5 @@
-﻿using Rg.Plugins.Popup.Pages;
+﻿using Rg.Plugins.Popup.Extensions;
+using Rg.Plugins.Popup.Pages;
 using System;
 using System.Threading.Tasks;
 using TOPOG.Views;
@@ -42,14 +43,18 @@ namespace TOPOG.ToastPage
             return Content.FadeTo(1);
         }
 
-        private void Close(object sender, EventArgs e)
+        private async void Close(object sender, EventArgs e)
         {
             App.Current.Properties["Rv"] = new Predst(new Izm(Convert.ToDouble(xo), Convert.ToDouble(yo), Convert.ToDouble(zo)),Ot.Text,To.Text,k);
+            App.Current.Properties["IC"] = true;
+            await Navigation.PopPopupAsync();
         }
 
-        private void Save(object sender, EventArgs e)
+        private async void Save(object sender, EventArgs e)
         {
             App.Current.Properties["Rv"] = null;
+            App.Current.Properties["IC"] = true;
+            await Navigation.PopPopupAsync();
         }
     }
 }

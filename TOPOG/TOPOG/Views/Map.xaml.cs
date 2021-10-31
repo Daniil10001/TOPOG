@@ -3,6 +3,7 @@ using Rg.Plugins.Popup.Extensions;
 using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TOPOG.ToastPage;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -58,8 +59,9 @@ namespace TOPOG.Views
 
         private async void Create(object sender, EventArgs e)
         {
+            App.Current.Properties["IC"] = false;
             await Navigation.PushPopupAsync(new ToastPicet(new Predst(new Izm(0, 0, 0), "", "", 0)));
-
+            while (!(bool)App.Current.Properties["IC"]) Task.Delay(100);
             Predst prd = (Predst)App.Current.Properties["Rv"];
             if (sm.pereh.ContainsKey(prd.ot))
             {

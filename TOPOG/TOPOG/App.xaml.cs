@@ -14,6 +14,7 @@ namespace TOPOG
         public App()
         {
             Current.Properties.Add("Cave",new Cave());
+            Current.Properties.Add("IC", new bool());
             Current.Properties.Add("Rv", new Predst(new Izm(0,0,0),"","",0));
             Current.Properties["Rv"] = null;
             Current.Properties.Add("Semka",new Semka());
