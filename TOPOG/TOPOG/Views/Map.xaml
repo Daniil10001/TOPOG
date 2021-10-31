@@ -8,8 +8,9 @@
         <StackLayout PropertyChanged="PropertyChanged">
             <StackLayout Orientation="Horizontal">
                 <Button Clicked="Create" Text="Новый пикет"/>
-                <Entry Placeholder="Начальный пикет" x:Name="NachP" Completed="TextChanged" HorizontalOptions=""/>
+                <Entry Placeholder="Начальный пикет" x:Name="NachP" Completed="TextChanged" />
             </StackLayout>
+            <!--<Label Text="" x:Name="Prn"></Label>-->
             <!--<Button Clicked="Button_Clicked"></Button>-->
             <ScrollView>
                 <ListView ItemTapped="Picets_ItemTapped" SelectionMode="None" x:Name="Picets" ItemsSource="{Binding prd}">

@@ -1,4 +1,5 @@
 ﻿using Android.Widget;
+using Newtonsoft.Json;
 using Rg.Plugins.Popup.Extensions;
 using Rg.Plugins.Popup.Services;
 using System;
@@ -42,18 +43,21 @@ namespace TOPOG.Views
         //} 
         public void up()
         {
+            //Prn.Text = JsonConvert.SerializeObject(sm);
             if (sm.pereh.ContainsKey(nach))
             {
+                
                 Picets.ItemsSource = null;
                 prd = Builder.obratn((new Builder(sm)).dfs(nach));
                 Picets.ItemsSource = prd;
                 this.BindingContext = this;
             }
+
         }
 
         private async void Picets_ItemTapped(object sender, ItemTappedEventArgs e)
         {
-            //await Navigation.PushPopupAsync(new ToastPicet((Predst)e.Item));
+            await Navigation.PushPopupAsync(new ToastPicet((Predst)e.Item));
         }
 
         private async void Create(object sender, EventArgs e)
@@ -67,6 +71,7 @@ namespace TOPOG.Views
             sm.sdvig[new Tuple<string, string>(prd.ot, prd.to)] = new Izm(prd.x, prd.y, prd.z);
             if (!sm.pereh.ContainsKey(prd.to)) sm.sdvig[new Tuple<string, string>(prd.to, prd.ot)] = new Izm(prd.x, prd.y, prd.z);
             App.Current.Properties["Semka"] = sm;
+            up();
         }
 
         private void TextChanged(object sender, EventArgs e)
@@ -81,7 +86,6 @@ namespace TOPOG.Views
             sm = (Semka)App.Current.Properties["Semka"];
             nach = sm.nach;
             up();
-            Toast.MakeText(Android.App.Application.Context, "2", ToastLength.Long).Show();
         }
     }
 }
