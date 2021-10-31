@@ -7,36 +7,27 @@
     <ContentPage.Content>
         <StackLayout PropertyChanged="PropertyChanged">
             <StackLayout Orientation="Horizontal">
-                <StackLayout Orientation="Vertical">
-                    <Button Clicked="Create" Text="Новый пикет"/>
-                </StackLayout>
-                <StackLayout Orientation="Vertical">
-                    <Entry Placeholder="Начальный пикет" x:Name="NachP" Completed="TextChanged"/>
-                </StackLayout>
+                <Button Clicked="Create" Text="Новый пикет"/>
+                <Entry Placeholder="Начальный пикет" x:Name="NachP" Completed="TextChanged" HorizontalOptions=""/>
             </StackLayout>
             <!--<Button Clicked="Button_Clicked"></Button>-->
             <ScrollView>
-                <ListView ItemTapped="Picets_ItemTapped" SelectionMode="Single" x:Name="Picets" ItemsSource="{Binding prd}">
+                <ListView ItemTapped="Picets_ItemTapped" SelectionMode="None" x:Name="Picets" ItemsSource="{Binding prd}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Grid Padding="10,0,0,0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="30"/>
-                                    <ColumnDefinition Width="15"/>
-                                    <ColumnDefinition Width="30"/>
-                                    <ColumnDefinition Width="40"/>
-                                    <ColumnDefinition Width="40"/>
-                                    <ColumnDefinition Width="40"/>
-                                </Grid.ColumnDefinitions>
-                                <Label Grid.Column="1" FontSize="Small" Text="{Binding otstup, StringFormat='{0}'}"/>
-                                <Label Grid.Column="1" FontSize="Small" Text="{Binding ot, StringFormat='{0}'}"/>
-                                <Label Grid.Column="2" Text="->" FontSize="19.2"/>
-                                <Label Grid.Column="3" FontSize="Small" Text="{Binding to, StringFormat='{0}'}"/>
-                                <Label Grid.Column="4" Text="0" FontSize="19.2" HorizontalTextAlignment="Center" />
-                                <Label Grid.Column="5" Text="0" FontSize="19.2" HorizontalTextAlignment="Center" />
-                                <Label Grid.Column="6" Text="0" FontSize="19.2" HorizontalTextAlignment="Center" />
-                            </Grid>
+                            <ViewCell>
+                                <StackLayout Orientation="Horizontal">
+                                    <Label  FontSize="19.2" Text="{Binding otstup, StringFormat='{0}'}"/>
+                                    <Label  FontSize="19.2" Text="{Binding ot, StringFormat='{0}'}" HorizontalTextAlignment="Start"/>
+                                    <Label  Text="->" FontSize="19.2"/>
+                                    
+                                    <Label  FontSize="19.2" Text="{Binding to, StringFormat='{0}  '}" HorizontalTextAlignment="Center"/>
+                                    
+                                    <Label  Text="{Binding x, StringFormat='{0}'}" FontSize="19.2" HorizontalTextAlignment="Center" />
+                                    <Label  Text="{Binding y, StringFormat='{0}'}" FontSize="19.2" HorizontalTextAlignment="Center" />
+                                    <Label  Text="{Binding z, StringFormat='{0}'}" FontSize="19.2" HorizontalTextAlignment="Center" />
+                                </StackLayout>
+                            </ViewCell>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>

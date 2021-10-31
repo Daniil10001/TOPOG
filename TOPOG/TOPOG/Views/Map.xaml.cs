@@ -79,8 +79,9 @@ namespace TOPOG.Views
         private async void PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             sm = (Semka)App.Current.Properties["Semka"];
-                nach = sm.nach;
-                up();
+            nach = sm.nach;
+            up();
+            Toast.MakeText(Android.App.Application.Context, "2", ToastLength.Long).Show();
         }
     }
 }
