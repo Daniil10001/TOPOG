@@ -142,7 +142,7 @@ namespace TOPOG.Views
             {
                 var vr = smk.sdvig[new Tuple<string, string>(nach, sl)];
                 Izm izm = new Izm(vr.x, vr.y, vr.z);
-                if (isp.ContainsKey(sl)) ps.berh[sl] = new Tuple<Izm,Postr>(izm,null);
+                if (!isp.ContainsKey(sl)) ps.berh[sl] = new Tuple<Izm,Postr>(izm,null);
                 else ps.berh[sl]=new Tuple<Izm, Postr>(izm,dfs(sl));
                 //if (!smk.sdvig.ContainsKey(new Tuple<string, string>(sl, nach)))
             }
