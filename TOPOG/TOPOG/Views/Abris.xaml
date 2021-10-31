@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:skia="clr-namespace:SkiaSharp.Views.Forms;assembly=SkiaSharp.Views.Forms"
+             xmlns:tt1="clr-namespace:TouchTracking.Forms;assembly=TouchTracking.Forms"
+             x:Class="TOPOG.Views.Abris"
+             Title="Abris">
+    <ContentPage.Content>
+        <StackLayout>
+            <ScrollView Orientation="Horizontal" HeightRequest="50">
+                <StackLayout Orientation="Horizontal">
+                    <Button />
+                    <Button />
+                </StackLayout>
+            </ScrollView>
+            <Label Text="Scale {0}"/>
+            <Grid Grid.Row="0" BackgroundColor="Black" HeightRequest="400">
+                <!--<skia:SKCanvasView x:Name="canvasView"
+                           PaintSurface="OnCanvasViewPaintSurface" />
+                   <Grid.Effects>
+                      <tt1:TouchEffect Capture="True"
+                             TouchAction="OnTouchEffectAction" />
+                    </Grid.Effects>-->
+            </Grid>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

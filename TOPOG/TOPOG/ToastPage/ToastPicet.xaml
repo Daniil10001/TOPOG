@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<pages:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+             xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup" xmlns:topog="clr-namespace:TOPOG" x:DataType="topog:Sh"
+                 x:Class="TOPOG.ToastPage.ToastPicet">
+    <!--Animations use example-->
+    <pages:PopupPage.Animation>
+        <animations:ScaleAnimation 
+      PositionIn="Center"
+      PositionOut="Center"
+      ScaleIn="1.2"
+      ScaleOut="0.8"
+      DurationIn="400"
+      DurationOut="300"
+      EasingIn="SinOut"
+      EasingOut="SinIn"
+      HasBackgroundAnimation="True"/>
+    </pages:PopupPage.Animation>
+    <StackLayout  HorizontalOptions="Center" VerticalOptions="Center" >
+        <Frame CornerRadius="10" Padding="50" BackgroundColor="White" >
+            <StackLayout>
+                <Label Text="Переход от" FontSize="Medium" />
+                <Entry x:Name="Ot"  />
+                <Label Text="к" FontSize="Medium" />
+                <Entry x:Name="To" />
+                <Label Text="сдвиг" FontSize="Medium" />
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="40" />
+                    </Grid.RowDefinitions>
+                    <Label Text="x" HorizontalOptions="Center" Grid.Row="0" Grid.Column="0" FontSize="Medium" />
+                    <Label Text="y" HorizontalOptions="Center" Grid.Row="0" Grid.Column="1" FontSize="Medium" />
+                    <Label Text="z" HorizontalOptions="Center" Grid.Row="0" Grid.Column="2" FontSize="Medium" />
+                    <Entry x:Name="xo" Grid.Row="1" Grid.Column="0" />
+                    <Entry x:Name="yo" Grid.Row="1" Grid.Column="1" />
+                    <Entry x:Name="zo" Grid.Row="1" Grid.Column="2" />
+                </Grid>
+                <Grid>
+                    <Button Text="Сохранить" Grid.Row="0" Grid.Column="0" Clicked="Save"/>
+                    <Button Text="Отмена"  Grid.Row="0" Grid.Column="1" Clicked="Cose"/>
+                </Grid>
+            </StackLayout>
+        </Frame>
+    </StackLayout>
+</pages:PopupPage>

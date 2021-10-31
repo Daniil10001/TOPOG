@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:skia="clr-namespace:SkiaSharp.Views.Forms;assembly=SkiaSharp.Views.Forms"
+             xmlns:tt1="clr-namespace:TouchTracking.Forms;assembly=TouchTracking.Forms"
+             x:Class="TOPOG.Views.Map" Title="Semka">
+    <ContentPage.Content>
+        <StackLayout PropertyChanged="PropertyChanged">
+            <StackLayout Orientation="Horizontal">
+                <StackLayout Orientation="Vertical">
+                    <Button Clicked="Создать" Text="Новый пикет"/>
+                </StackLayout>
+                <StackLayout Orientation="Vertical">
+                    <Entry Placeholder="Начальный пикет" x:Name="NachP" TextChanged="TextChanged"/>
+                </StackLayout>
+            </StackLayout>
+            <!--<Button Clicked="Button_Clicked"></Button>-->
+            <ScrollView>
+                <ListView ItemTapped="Picets_ItemTapped" SelectionMode="Single" x:Name="Picets">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Padding="10,0,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="30"/>
+                                    <ColumnDefinition Width="15"/>
+                                    <ColumnDefinition Width="30"/>
+                                    <ColumnDefinition Width="40"/>
+                                    <ColumnDefinition Width="40"/>
+                                    <ColumnDefinition Width="40"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="1" FontSize="Small" Text="{Binding otstup, StringFormat='{0}'}"/>
+                                <Label Grid.Column="1" FontSize="Small" Text="{Binding ot, StringFormat='{0}'}"/>
+                                <Label Grid.Column="2" Text="->" FontSize="19.2"/>
+                                <Label Grid.Column="3" FontSize="Small" Text="{Binding to, StringFormat='{0}'}"/>
+                                <Label Grid.Column="4" Text="{Binding x, StringFormat='{0}'}" FontSize="19.2" HorizontalTextAlignment="Center" />
+                                <Label Grid.Column="5" Text="{Binding y, StringFormat='{0}'}" FontSize="19.2" HorizontalTextAlignment="Center" />
+                                <Label Grid.Column="6" Text="{Binding z, StringFormat='{0}'}" FontSize="19.2" HorizontalTextAlignment="Center" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </ScrollView>
+            <Grid Padding="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition  Height="100"/>
+                    <RowDefinition  Height="100"/>
+                </Grid.RowDefinitions>
+                <Button Text="Пикет" Grid.Column="1" Grid.Row="0"/>
+                <Button Text="Еж" Grid.Column="1" Grid.Row="1"/>
+                <skia:SKCanvasView Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" BackgroundColor="Black" x:Name="canvasView"
+                           PaintSurface="canvasView_PaintSurface">
+                    <skia:SKCanvasView.Effects>
+                        <tt1:TouchEffect Capture="True"
+                            TouchAction="TouchEffect_TouchAction" />
+                    </skia:SKCanvasView.Effects>
+                </skia:SKCanvasView>
+            </Grid>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

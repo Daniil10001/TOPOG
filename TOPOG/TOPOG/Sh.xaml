@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Shell xmlns="http://xamarin.com/schemas/2014/forms" 
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:local="clr-namespace:TOPOG.Views"
+       Title="App2"
+       x:Class="TOPOG.Sh">
+
+    <FlyoutItem Title="Caves" >
+        <ShellContent Route="Mn" ContentTemplate="{DataTemplate local:Mn}" />
+    </FlyoutItem>
+    <FlyoutItem Title="Cave Settings">
+        <ShellContent Route="CaveSettings" ContentTemplate="{DataTemplate local:CaveSettings}" />
+    </FlyoutItem>
+    <FlyoutItem Title="Abris">
+        <Tab Title="Abris">
+            <ShellContent Route="Abris" ContentTemplate="{DataTemplate local:Abris}" />
+        </Tab>
+        <Tab Title="Paint">
+            <ShellContent Route="Paint" ContentTemplate="{DataTemplate local:Paint}" />
+        </Tab>
+    </FlyoutItem>
+    <FlyoutItem Title="Semka">
+        <ShellContent Route="Map" ContentTemplate="{DataTemplate local:Map}" />
+    </FlyoutItem>
+    <FlyoutItem Title="Conection">
+        <ShellContent Route="Conect" ContentTemplate="{DataTemplate local:Conect}" />
+    </FlyoutItem>
+
+</Shell>
+
+<!--
+    <?xml version="1.0" encoding="utf-8" ?>
+<Shell xmlns="http://xamarin.com/schemas/2014/forms" 
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:local="clr-namespace:TOPOG.Views"
+       Title="App2"
+       x:Class="TOPOG.Sh">
+
+    <FlyoutItem Title="Caves">
+        <ShellContent Route="Mn" ContentTemplate="{DataTemplate local:Mn}" />
+        <Tab Route="Pd" IsVisible="False">
+            <ShellContent Route="CaveSettings" ContentTemplate="{DataTemplate local:CaveSettings}" />
+            <ShellContent Route="Conect" ContentTemplate="{DataTemplate local:Conect}" />
+        </Tab>
+    </FlyoutItem>
+    <FlyoutItem Title="Cave Settings">
+        <ShellContent Route="CaveSettings" ContentTemplate="{DataTemplate local:CaveSettings}" />
+    </FlyoutItem>
+    <FlyoutItem Title="Conection">
+        <ShellContent Route="Conect" ContentTemplate="{DataTemplate local:Conect}" />
+    </FlyoutItem>
+    <FlyoutItem Title="Abris">
+        <Tab Title="Abris">
+            <ShellContent Route="Abris" ContentTemplate="{DataTemplate local:Abris}" />
+        </Tab>
+        <Tab Title="Paint">
+            <ShellContent Route="Paint" ContentTemplate="{DataTemplate local:Paint}" />
+        </Tab>
+    </FlyoutItem>
+    
+</Shell>
+
+-->

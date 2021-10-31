@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TOPOG.Views.CaveSettings">
+    <ContentPage.Content>
+        <StackLayout PropertyChanged="StackLayout_PropertyChanged">
+            <Grid>
+                <!--<Grid.RowDefinitions>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                </Grid.ColumnDefinitions>-->
+                <Label Text="Название" Grid.Row="0" FontSize="25" Padding="10"/>
+                <Entry x:Name="nm"  Grid.Row="1"/>
+                <Label  Text="Описание" Grid.Row="2"  FontSize="25" Padding="10"/>
+                <Entry x:Name="ds" Grid.Row="3"  />
+                <Label Text="Местоположение" Grid.Row="4"  FontSize="25" Padding="10"/>
+                <Entry x:Name="mest" Grid.Row="5"  />
+                <Button Text="Сохранить" Clicked="Button_Clicked" Grid.Row="6" Padding="10"/>
+            </Grid>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
