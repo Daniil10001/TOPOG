@@ -45,7 +45,7 @@ namespace TOPOG.ToastPage
 
         private async void Save(object sender, EventArgs e)
         {
-            App.Current.Properties["Rv"] = new Predst(new Izm(Convert.ToDouble(xo), Convert.ToDouble(yo), Convert.ToDouble(zo)),Ot.Text,To.Text,k);
+            App.Current.Properties["Rv"] = new Predst(new Izm(Convert.ToDouble(xo.Text), Convert.ToDouble(yo.Text), Convert.ToDouble(zo.Text)),Ot.Text,To.Text,k);
             App.Current.Properties["IC"] = true;
             await Navigation.PopPopupAsync();
         }
