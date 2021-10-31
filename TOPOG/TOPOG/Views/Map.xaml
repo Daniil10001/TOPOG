@@ -16,7 +16,7 @@
             </StackLayout>
             <!--<Button Clicked="Button_Clicked"></Button>-->
             <ScrollView>
-                <ListView ItemTapped="Picets_ItemTapped" SelectionMode="Single" x:Name="Picets">
+                <ListView ItemTapped="Picets_ItemTapped" SelectionMode="Single" x:Name="Picets" ItemsSource="{Binding prd}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <Grid Padding="10,0,0,0">
@@ -33,9 +33,9 @@
                                 <Label Grid.Column="1" FontSize="Small" Text="{Binding ot, StringFormat='{0}'}"/>
                                 <Label Grid.Column="2" Text="->" FontSize="19.2"/>
                                 <Label Grid.Column="3" FontSize="Small" Text="{Binding to, StringFormat='{0}'}"/>
-                                <Label Grid.Column="4" Text="{Binding x, StringFormat='{0}'}" FontSize="19.2" HorizontalTextAlignment="Center" />
-                                <Label Grid.Column="5" Text="{Binding y, StringFormat='{0}'}" FontSize="19.2" HorizontalTextAlignment="Center" />
-                                <Label Grid.Column="6" Text="{Binding z, StringFormat='{0}'}" FontSize="19.2" HorizontalTextAlignment="Center" />
+                                <Label Grid.Column="4" Text="0" FontSize="19.2" HorizontalTextAlignment="Center" />
+                                <Label Grid.Column="5" Text="0" FontSize="19.2" HorizontalTextAlignment="Center" />
+                                <Label Grid.Column="6" Text="0" FontSize="19.2" HorizontalTextAlignment="Center" />
                             </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>

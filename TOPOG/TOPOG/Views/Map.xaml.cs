@@ -44,8 +44,8 @@ namespace TOPOG.Views
         {
             if (sm.pereh.ContainsKey(nach))
             {
-                prd = Builder.obratn((new Builder(sm)).dfs(nach));
                 Picets.ItemsSource = null;
+                prd = Builder.obratn((new Builder(sm)).dfs(nach));
                 Picets.ItemsSource = prd;
                 this.BindingContext = this;
             }
@@ -53,7 +53,7 @@ namespace TOPOG.Views
 
         private async void Picets_ItemTapped(object sender, ItemTappedEventArgs e)
         {
-            await Navigation.PushPopupAsync(new ToastPicet((Predst)e.Item));
+            //await Navigation.PushPopupAsync(new ToastPicet((Predst)e.Item));
         }
 
         private async void Create(object sender, EventArgs e)
