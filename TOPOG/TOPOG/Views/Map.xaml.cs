@@ -64,9 +64,9 @@ namespace TOPOG.Views
             while (!(bool)App.Current.Properties["IC"]) Task.Delay(100);
             Predst prd = (Predst)App.Current.Properties["Rv"];
             if (sm.pereh.ContainsKey(prd.ot)) sm.pereh[prd.ot] = new HashSet<string>();
-                sm.pereh[prd.ot].Add(prd.to);
-                sm.sdvig[new Tuple<string, string>(prd.ot, prd.to)] = new Izm(prd.x, prd.y, prd.z);
-                if (!sm.pereh.ContainsKey(prd.to)) sm.sdvig[new Tuple<string, string>(prd.to, prd.ot)] = new Izm(prd.x, prd.y, prd.z);
+            sm.pereh[prd.ot].Add(prd.to);
+            sm.sdvig[new Tuple<string, string>(prd.ot, prd.to)] = new Izm(prd.x, prd.y, prd.z);
+            if (!sm.pereh.ContainsKey(prd.to)) sm.sdvig[new Tuple<string, string>(prd.to, prd.ot)] = new Izm(prd.x, prd.y, prd.z);
             App.Current.Properties["Semka"] = sm;
         }
 
