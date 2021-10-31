@@ -42,7 +42,7 @@ namespace TOPOG.Views
         //} 
         public void up()
         {
-            if (nach != "")
+            if (sm.pereh.ContainsKey(nach))
             {
                 prd = Builder.obratn((new Builder(sm)).dfs(nach));
                 Picets.ItemsSource = null;
@@ -62,17 +62,18 @@ namespace TOPOG.Views
             await Navigation.PushPopupAsync(new ToastPicet(new Predst(new Izm(0, 0, 0), "", "", 0)));
             while (!(bool)App.Current.Properties["IC"]) await Task.Delay(100);
             Predst prd = (Predst)App.Current.Properties["Rv"];
-            if (sm.pereh.ContainsKey(prd.ot)) sm.pereh[prd.ot] = new HashSet<string>();
+            if (!sm.pereh.ContainsKey(prd.ot)) sm.pereh[prd.ot] = new HashSet<string>();
             sm.pereh[prd.ot].Add(prd.to);
             sm.sdvig[new Tuple<string, string>(prd.ot, prd.to)] = new Izm(prd.x, prd.y, prd.z);
             if (!sm.pereh.ContainsKey(prd.to)) sm.sdvig[new Tuple<string, string>(prd.to, prd.ot)] = new Izm(prd.x, prd.y, prd.z);
             App.Current.Properties["Semka"] = sm;
         }
 
-        private void TextChanged(object sender, TextChangedEventArgs e)
+        private void TextChanged(object sender, EventArgs e)
         {
             Toast.MakeText(Android.App.Application.Context, "ch", ToastLength.Long).Show();
             nach = NachP.Text;
+            up();
         }
 
         private async void PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

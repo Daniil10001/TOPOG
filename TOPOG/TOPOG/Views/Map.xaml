@@ -11,7 +11,7 @@
                     <Button Clicked="Create" Text="Новый пикет"/>
                 </StackLayout>
                 <StackLayout Orientation="Vertical">
-                    <Entry Placeholder="Начальный пикет" x:Name="NachP" TextChanged="TextChanged"/>
+                    <Entry Placeholder="Начальный пикет" x:Name="NachP" Completed="TextChanged"/>
                 </StackLayout>
             </StackLayout>
             <!--<Button Clicked="Button_Clicked"></Button>-->
