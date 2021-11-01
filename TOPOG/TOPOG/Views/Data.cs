@@ -170,7 +170,7 @@ namespace TOPOG.Views
             z = iz.z;
             ot = otp;
             to = top;
-            otstup = new String(' ', otst);
+            otstup = new String('.', otst);
         }
         public double x { get; set; }
         public double y { get; set; }
