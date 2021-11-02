@@ -10,7 +10,7 @@
         <ListView x:Name="Caves" SelectionMode="Single"
                     ItemsSource="{Binding CavesA}"
                 ItemSelected="ItemSelected">
-            <ListView.ItemTemplate>
+            <ListView.ItemTemplate> 
                 <DataTemplate>
                     <TextCell
                                 Text="{Binding Name,StringFormat='{0}'}"

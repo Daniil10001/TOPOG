@@ -45,6 +45,7 @@ namespace TOPOG.Views
         }
         public async void ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
+            ((Semka)App.Current.Properties["Semka"]).save();
             Cave c = CavesA[e.SelectedItemIndex];
             App.Current.Properties["Cave"]=c;
             Pt.Text = "Статус:Обработка";

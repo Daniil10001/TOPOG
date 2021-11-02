@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
+using Newtonsoft.Json;
 using SkiaSharp;
 
 namespace TOPOG.Views
@@ -86,7 +88,7 @@ namespace TOPOG.Views
             nach = "";
             pwe = new Dictionary<string, Ezi>();
             pereh = new Dictionary<string, HashSet<string>>();
-            sdvig = new Dictionary<Tuple<string, string>, Izm>();
+            sdvig = new Dictionary<(string, string), Izm>();
         }
         public string Name { get; set; }
         public string Description { get; set; }
@@ -94,19 +96,28 @@ namespace TOPOG.Views
         public string nach { get; set; }
         public Dictionary<string, Ezi> pwe { get; set; }
         public Dictionary<string, HashSet<string>> pereh { get; set; }
-        public Dictionary<Tuple<string, string>, Izm> sdvig { get; set; }
+        public Dictionary<(string, string), Izm> sdvig { get; set; }
         public string PathA
         {
             get
             {
                 if (Name != "")
                 {
-                    return Android.App.Application.Context.GetExternalFilesDir("").ToString() + "/" + Name + "_abr.cv";
+                    return Android.App.Application.Context.GetExternalFilesDir("").ToString() + "/" + Name + ".abr";
                 }
                 else
                 {
                     return null;
                 }
+            }
+        }
+        public void save()
+        {
+            if (Name != "")
+            {
+                string pth = Android.App.Application.Context.GetExternalFilesDir("").ToString() + "/" + Name + ".cv";
+                string createText = JsonConvert.SerializeObject(this);
+                File.WriteAllText(pth, createText);
             }
         }
     }
@@ -140,7 +151,7 @@ namespace TOPOG.Views
             isp[nach] = true;
             foreach (string sl in smk.pereh[nach])
             {
-                var vr = smk.sdvig[new Tuple<string, string>(nach, sl)];
+                var vr = smk.sdvig[(nach, sl)];
                 Izm izm = new Izm(vr.x, vr.y, vr.z);
                 if (isp.ContainsKey(sl) || !smk.pereh.ContainsKey(sl)) ps.berh[sl] = new Tuple<Izm,Postr>(izm,null);
                 else ps.berh[sl]=new Tuple<Izm, Postr>(izm,dfs(sl));

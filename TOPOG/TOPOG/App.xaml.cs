@@ -30,6 +30,8 @@ namespace TOPOG
 
         protected override void OnSleep()
         {
+            //((Semka)App.Current.Properties["Semka"]).save();
+            Toast.MakeText(Android.App.Application.Context, "Sleep", ToastLength.Short).Show();
         }
 
         protected override void OnResume()
