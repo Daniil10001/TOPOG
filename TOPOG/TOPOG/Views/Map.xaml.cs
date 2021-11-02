@@ -46,7 +46,7 @@ namespace TOPOG.Views
             //Prn.Text = JsonConvert.SerializeObject(sm);
             if (sm.pereh.ContainsKey(nach))
             {
-                
+                //Toast.MakeText(Android.App.Application.Context, "ch", ToastLength.Long).Show();
                 Picets.ItemsSource = null;
                 prd = Builder.obratn((new Builder(sm)).dfs(nach));
                 Picets.ItemsSource = prd;
@@ -66,17 +66,22 @@ namespace TOPOG.Views
             await Navigation.PushPopupAsync(new ToastPicet(new Predst(new Izm(0, 0, 0), "", "", 0)));
             while (!(bool)App.Current.Properties["IC"]) await Task.Delay(100);
             Predst prd = (Predst)App.Current.Properties["Rv"];
+            if (prd == null) return;
             if (!sm.pereh.ContainsKey(prd.ot)) sm.pereh[prd.ot] = new HashSet<string>();
+            //if (!sm.pereh.ContainsKey(prd.to)) sm.pereh[prd.to] = new HashSet<string>();
             sm.pereh[prd.ot].Add(prd.to);
-            sm.sdvig[new Tuple<string, string>(prd.ot, prd.to)] = new Izm(prd.x, prd.y, prd.z);
-            if (!sm.pereh.ContainsKey(prd.to)) sm.sdvig[new Tuple<string, string>(prd.to, prd.ot)] = new Izm(prd.x, prd.y, prd.z);
+            //sm.pereh[prd.to].Add(prd.ot);
+            sm.sdvig[prd.ot+"!@TOPOG@!"+prd.to] = new Izm(prd.x, prd.y, prd.z);
+            sm.sdvig[prd.to+ "!@TOPOG@!" + prd.ot] = new Izm(prd.x, prd.y, prd.z);
             App.Current.Properties["Semka"] = sm;
             up();
         }
 
         private void TextChanged(object sender, EventArgs e)
         {
-            Toast.MakeText(Android.App.Application.Context, "ch", ToastLength.Long).Show();
+            
+            sm.nach = NachP.Text;
+            App.Current.Properties["Semka"] = sm;
             nach = NachP.Text;
             up();
         }
@@ -85,6 +90,8 @@ namespace TOPOG.Views
         {
             sm = (Semka)App.Current.Properties["Semka"];
             nach = sm.nach;
+            NachP.Text = sm.nach;
+            sm.save();
             up();
         }
     }

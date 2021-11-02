@@ -1,27 +1,31 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
              x:Class="TOPOG.Views.Mn"
              Title="Съемки">
 
     <StackLayout PropertyChanged="StackLayout_PropertyChanged">
         <!--<Label Text="" FontSize="40" HorizontalOptions="Center"></Label>-->
         <Label Text="Статус:ОК" x:Name="Pt"/>
-        <ListView x:Name="Caves" SelectionMode="Single"
+        <ListView x:Name="Caves" SelectionMode="Single" 
                     ItemsSource="{Binding CavesA}"
                 ItemSelected="ItemSelected">
             <ListView.ItemTemplate> 
                 <DataTemplate>
-                    <TextCell
-                                Text="{Binding Name,StringFormat='{0}'}"
-                                Detail="{Binding Locat,StringFormat='  {0}'}"
-                                TextColor="Black"
-                                DetailColor="Black">
-                        <TextCell.ContextActions >
-                            <MenuItem Text="Удалить" IsDestructive="True" Clicked="Del" />
-                            <!--<MenuItem Text="Изменить" IsDestructive="True" Clicked="Izm" />-->
-                        </TextCell.ContextActions>
-                    </TextCell>
+                    <ViewCell>
+                        <SwipeView android:SwipeView.SwipeTransitionMode="Drag">
+                                <SwipeView.RightItems>
+                                    <SwipeItem Text="Delete"
+                                    BackgroundColor="Red"
+                                    Invoked="Del" />
+                                </SwipeView.RightItems>
+                                <StackLayout Padding="5,0,0,0" BackgroundColor="White">
+                                    <Label Text="{Binding Name,StringFormat='{0}'}" />
+                                </StackLayout>
+
+                            </SwipeView>
+                    </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

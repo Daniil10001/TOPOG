@@ -27,7 +27,7 @@ namespace TOPOG.Views
             {
                 //Create a file to write 
                 string createText = JsonConvert.SerializeObject(new List<Cave>() { });
-                Toast.MakeText(Android.App.Application.Context, createText, ToastLength.Short).Show();
+                //Toast.MakeText(Android.App.Application.Context, createText, ToastLength.Short).Show();
                 File.WriteAllText(path, createText);
             }
             CavesA = JsonConvert.DeserializeObject<List<Cave>>(File.ReadAllText(path));
@@ -37,11 +37,13 @@ namespace TOPOG.Views
         }
         public void update()
         {
+            Caves.IsRefreshing = true;
             Caves.ItemsSource = null;
             CavesA = JsonConvert.DeserializeObject<List<Cave>>(File.ReadAllText(path));
             //Environment.SpecialFolder.LocalApplicationData
             Caves.ItemsSource = CavesA;
             this.BindingContext = this;
+            Caves.IsRefreshing = false;
         }
         public async void ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
@@ -57,6 +59,24 @@ namespace TOPOG.Views
         public void Del(object sender, EventArgs e)
         {
             //await Shell.Current.GoToAsync("//CaveSettings");
+            SwipeItem sw = ((SwipeItem)sender);
+            Cave cv = (Cave)sw.BindingContext;
+            List<Cave> ls = JsonConvert.DeserializeObject<List<Cave>>(File.ReadAllText(path));
+            int i = 0,ans=0;
+            foreach (Cave ca in ls)
+            {
+                if (ca.Name == cv.Name)
+                {
+                    ans=i;
+                }
+                i++;
+            }
+            ls.RemoveAt(ans);
+            File.Delete(cv.PathA);
+            string createText = JsonConvert.SerializeObject(ls);
+            File.WriteAllText(path, createText);
+            update();
+            //Toast.MakeText(Android.App.Application.Context, ls.Contains(cv).ToString(), ToastLength.Short).Show();
         }
         public async void Nw(object sender, EventArgs e)
         {

@@ -88,7 +88,7 @@ namespace TOPOG.Views
             nach = "";
             pwe = new Dictionary<string, Ezi>();
             pereh = new Dictionary<string, HashSet<string>>();
-            sdvig = new Dictionary<(string, string), Izm>();
+            sdvig = new Dictionary<string, Izm>();
         }
         public string Name { get; set; }
         public string Description { get; set; }
@@ -96,7 +96,7 @@ namespace TOPOG.Views
         public string nach { get; set; }
         public Dictionary<string, Ezi> pwe { get; set; }
         public Dictionary<string, HashSet<string>> pereh { get; set; }
-        public Dictionary<(string, string), Izm> sdvig { get; set; }
+        public Dictionary<string, Izm> sdvig { get; set; }
         public string PathA
         {
             get
@@ -151,7 +151,7 @@ namespace TOPOG.Views
             isp[nach] = true;
             foreach (string sl in smk.pereh[nach])
             {
-                var vr = smk.sdvig[(nach, sl)];
+                var vr = smk.sdvig[nach+ "!@TOPOG@!" + sl];
                 Izm izm = new Izm(vr.x, vr.y, vr.z);
                 if (isp.ContainsKey(sl) || !smk.pereh.ContainsKey(sl)) ps.berh[sl] = new Tuple<Izm,Postr>(izm,null);
                 else ps.berh[sl]=new Tuple<Izm, Postr>(izm,dfs(sl));

@@ -10,14 +10,14 @@
                 <Button Clicked="Create" Text="Новый пикет"/>
                 <Entry Placeholder="Начальный пикет" x:Name="NachP" Completed="TextChanged" />
             </StackLayout>
-            <!--<Label Text="" x:Name="Prn"></Label>-->
+            <Label Text="" x:Name="Prn"></Label>
             <!--<Button Clicked="Button_Clicked"></Button>-->
             <ScrollView>
                 <ListView ItemTapped="Picets_ItemTapped" SelectionMode="None" x:Name="Picets" ItemsSource="{Binding prd}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
-                                <StackLayout Orientation="Horizontal">
+                                <StackLayout Orientation="Horizontal" Padding="5,0,0,0">
                                     <Label  FontSize="19.2" Text="{Binding otstup, StringFormat='{0}'}"/>
                                     <Label  FontSize="19.2" Text="{Binding ot, StringFormat='{0}'}" HorizontalTextAlignment="Start"/>
                                     <Label  Text="->" FontSize="19.2"/>

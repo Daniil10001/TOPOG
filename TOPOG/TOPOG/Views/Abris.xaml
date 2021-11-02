@@ -15,12 +15,12 @@
             </ScrollView>
             <Label Text="Scale {0}"/>
             <Grid Grid.Row="0" BackgroundColor="Black" HeightRequest="400">
-                <!--<skia:SKCanvasView x:Name="canvasView"
-                           PaintSurface="OnCanvasViewPaintSurface" />
-                   <Grid.Effects>
-                      <tt1:TouchEffect Capture="True"
-                             TouchAction="OnTouchEffectAction" />
-                    </Grid.Effects>-->
+                <skia:SKCanvasView x:Name="canvasView"
+                           PaintSurface="canvasView_PaintSurface"/>
+                <Grid.Effects>
+                    <tt1:TouchEffect Capture="True"
+                             TouchAction="TouchEffect_TouchAction" />
+                </Grid.Effects>
             </Grid>
         </StackLayout>
     </ContentPage.Content>

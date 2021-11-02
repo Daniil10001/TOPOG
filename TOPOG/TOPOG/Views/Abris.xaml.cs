@@ -18,12 +18,12 @@ namespace TOPOG.Views
 
         private void canvasView_PaintSurface(object sender, SkiaSharp.Views.Forms.SKPaintSurfaceEventArgs e)
         {
-             
+              
         }
 
         private void TouchEffect_TouchAction(object sender, TouchTracking.TouchActionEventArgs args)
         {
-
+              
         }
     }
 }
