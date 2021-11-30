@@ -15,10 +15,10 @@ namespace TOPOG.ToastPage
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class Priem : PopupPage
     {
-        public Priem()
+        public Priem() 
         {
             InitializeComponent();
-        } 
+        }  
         protected override void OnAppearing()
         { 
             base.OnAppearing();
