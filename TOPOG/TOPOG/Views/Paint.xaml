@@ -9,4 +9,4 @@
                 HorizontalOptions="CenterAndExpand" />
         </StackLayout>
     </ContentPage.Content>
-</ContentPage>
+</ContentPage> 

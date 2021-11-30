@@ -6,22 +6,24 @@
              x:Class="TOPOG.Views.Abris"
              Title="Abris">
     <ContentPage.Content>
-        <StackLayout>
-            <ScrollView Orientation="Horizontal" HeightRequest="50">
-                <StackLayout Orientation="Horizontal">
-                    <Button />
-                    <Button />
-                </StackLayout>
-            </ScrollView>
+        <StackLayout PropertyChanged="StackLayout_PropertyChanged">
+            <StackLayout Orientation="Horizontal">
+                <ScrollView Orientation="Horizontal" HeightRequest="50">
+                    <StackLayout Orientation="Horizontal">
+                        <Button  />
+                        <Button />
+                    </StackLayout>
+                </ScrollView> 
+                <Button Text="Переключиться" Clicked="Button_Clicked"></Button>
+            </StackLayout>
             <Label Text="Scale {0}"/>
-            <Grid Grid.Row="0" BackgroundColor="Black" HeightRequest="400">
-                <skia:SKCanvasView x:Name="canvasView"
-                           PaintSurface="canvasView_PaintSurface"/>
-                <Grid.Effects>
-                    <tt1:TouchEffect Capture="True"
+            <skia:SKCanvasView x:Name="canvasView" Background="Black"
+                           PaintSurface="canvasView_PaintSurface"  VerticalOptions="CenterAndExpand" HeightRequest="700">
+                    <skia:SKCanvasView.Effects>
+                        <tt1:TouchEffect Capture="True"
                              TouchAction="TouchEffect_TouchAction" />
-                </Grid.Effects>
-            </Grid>
-        </StackLayout>
+                    </skia:SKCanvasView.Effects>
+                </skia:SKCanvasView>
+            </StackLayout>
     </ContentPage.Content>
 </ContentPage>

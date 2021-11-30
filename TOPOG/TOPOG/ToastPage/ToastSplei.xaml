@@ -1,0 +1,90 @@
+﻿<pages:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+                 xmlns:local="clr-namespace:TOPOG.ToastPage"
+                              xmlns:skia="clr-namespace:SkiaSharp.Views.Forms;assembly=SkiaSharp.Views.Forms"
+             xmlns:tt1="clr-namespace:TouchTracking.Forms;assembly=TouchTracking.Forms"
+             xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup" xmlns:topog="clr-namespace:TOPOG"
+                 x:Class="TOPOG.ToastPage.SplView">
+    <!--Animations use example-->
+    <pages:PopupPage.Animation>
+        <animations:ScaleAnimation 
+      PositionIn="Center"
+      PositionOut="Center"
+      ScaleIn="1.2"
+      ScaleOut="0.8"
+      DurationIn="400"  
+      DurationOut="300"
+      EasingIn="SinOut"
+      EasingOut="SinIn"
+      HasBackgroundAnimation="True"/>
+    </pages:PopupPage.Animation>
+    <StackLayout  HorizontalOptions="Center" VerticalOptions="Center" >
+        <Frame CornerRadius="10" Padding="50" BackgroundColor="White" >
+            <ScrollView>
+                <StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="Пикет: " HorizontalOptions="Center" Grid.Row="0" Grid.Column="2" FontSize="Medium" />
+                        <Entry x:Name="pic" Grid.Row="1" Grid.Column="0" TextChanged="pic_TextChanged"/>
+                    </StackLayout>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="20" />
+                            <RowDefinition Height="40" />
+                        </Grid.RowDefinitions>
+                        <Label Text="x" HorizontalOptions="Center" Grid.Row="0" Grid.Column="0" FontSize="Medium" />
+                        <Label Text="y" HorizontalOptions="Center" Grid.Row="0" Grid.Column="1" FontSize="Medium" />
+                        <Label Text="z" HorizontalOptions="Center" Grid.Row="0" Grid.Column="2" FontSize="Medium" />
+                        <Entry x:Name="xo" Text="0" Grid.Row="1" Grid.Column="0" />
+                        <Entry x:Name="yo" Text="0" Grid.Row="1" Grid.Column="1" />
+                        <Entry x:Name="zo" Text="0" Grid.Row="1" Grid.Column="2" />
+                    </Grid>
+                    <Frame HeightRequest="200">
+                        <ScrollView >
+                            <ListView x:Name="otspl" ItemsSource="{Binding splei}"  SelectionMode="None">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <ViewCell>
+                                            <SwipeView>
+                                                <SwipeView.RightItems>
+                                                    <SwipeItem Text="Delete"
+                                    BackgroundColor="Red"
+                                    Invoked="Del" />
+                                                </SwipeView.RightItems>
+                                                <StackLayout Orientation="Horizontal" Padding="5,0,0,0" Background="White">
+                                                    <Label  Text="{Binding x, StringFormat='{0}'}" FontSize="19.2" HorizontalTextAlignment="Center" />
+                                                    <Label  Text="{Binding y, StringFormat='{0}'}" FontSize="19.2" HorizontalTextAlignment="Center" />
+                                                    <Label  Text="{Binding z, StringFormat='{0}'}" FontSize="19.2" HorizontalTextAlignment="Center" />
+                                                    <Switch IsToggled="{Binding orient}" Toggled="Switch_Toggled" x:Name="swt"/>
+                                                    <Label  FontSize="19.2" HorizontalTextAlignment="Center">
+                                                        <Label.Text>
+                                                            <Binding Source="{x:Reference swt}" Path="IsToggled">
+                                                                <Binding.Converter>
+                                                                    <local:BoolToObjectConverter x:TypeArguments="x:String"
+                                                         TrueObject="Вертикальный"
+                                                         FalseObject="Горизонтальный" />
+                                                                </Binding.Converter>
+                                                            </Binding>
+                                                        </Label.Text>
+                                                    </Label>
+                                                </StackLayout>
+                                            </SwipeView>
+                                        </ViewCell>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </ScrollView>
+                    </Frame>
+                    <StackLayout>
+                        <Button Text="Сдвиг" Clicked="Sdvig"/>
+                        <Button Text="Сплей" Clicked="New_Spl"/>
+                    </StackLayout>
+                    <Grid>
+                        <Button Text="Сохранить" Grid.Row="0" Grid.Column="0" Clicked="Save"/>
+                        <Button Text="Отмена"  Grid.Row="0" Grid.Column="1" Clicked="Close"/>
+                    </Grid>
+                </StackLayout>
+            </ScrollView>
+        </Frame>
+    </StackLayout>
+</pages:PopupPage>

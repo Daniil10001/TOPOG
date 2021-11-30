@@ -1,0 +1,52 @@
+﻿<pages:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+             xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup" xmlns:topog="clr-namespace:TOPOG" xmlns:tt1="clr-namespace:TouchTracking.Forms;assembly=TouchTracking.Forms" xmlns:skia="clr-namespace:SkiaSharp.Views.Forms;assembly=SkiaSharp.Views.Forms"
+                 x:Class="TOPOG.ToastPage.Vibor">
+    <!--Animations use example-->
+    <pages:PopupPage.Animation>
+        <animations:ScaleAnimation 
+      PositionIn="Center"
+      PositionOut="Center"
+      ScaleIn="1.2"
+      ScaleOut="0.8" 
+      DurationIn="400"
+      DurationOut="300"
+      EasingIn="SinOut"
+      EasingOut="SinIn"
+      HasBackgroundAnimation="True"/> 
+    </pages:PopupPage.Animation>
+    <StackLayout  HorizontalOptions="Center" VerticalOptions="Center" Padding="50">
+        <Frame BackgroundColor="White">
+            <StackLayout VerticalOptions="CenterAndExpand">
+                <ScrollView >
+                    <ListView x:Name="ls" ItemsSource="{Binding lst}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"></ColumnDefinition>
+                                            <ColumnDefinition Width="*"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                        <Button Grid.Column="0" Text="{Binding Item1}" Clicked="Button_Clicked"></Button>
+                                        <Button Grid.Column="1" Text="{Binding Item2}" Clicked="Button_Clicked"></Button>
+                                    </Grid>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </ScrollView>
+                <Grid x:Name="zp">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Entry Grid.Column="0" Text="" x:Name="fst"></Entry>
+                    <Entry Grid.Column="1" Text="" x:Name="scd"></Entry>
+                </Grid>
+                <Button Text="+" Clicked="Button_Clicked_1"></Button>
+            </StackLayout>
+        </Frame>
+    </StackLayout>
+</pages:PopupPage>

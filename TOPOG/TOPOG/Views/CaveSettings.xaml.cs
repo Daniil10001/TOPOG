@@ -12,12 +12,12 @@ using Xamarin.Forms.Xaml;
 
 namespace TOPOG.Views
 {
-    //[XamlCompilation(XamlCompilationOptions.Compile)]
+    [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class CaveSettings : ContentPage
     {
         public CaveSettings()
-        {
-            InitializeComponent();
+        { 
+            InitializeComponent(); 
         }
 
         private void StackLayout_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

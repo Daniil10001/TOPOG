@@ -23,7 +23,7 @@
                                 <StackLayout Padding="5,0,0,0" BackgroundColor="White">
                                     <Label Text="{Binding Name,StringFormat='{0}'}" />
                                 </StackLayout>
-
+ 
                             </SwipeView>
                     </ViewCell>
                 </DataTemplate>

@@ -12,11 +12,11 @@ using Xamarin.Forms.Xaml;
 
 namespace TOPOG.ToastPage
 {
-    [XamlCompilation(XamlCompilationOptions.Compile)]
+    [XamlCompilation(XamlCompilationOptions.Compile)] 
     public partial class Priem : PopupPage
     {
         public Priem() 
-        {
+        { 
             InitializeComponent();
         }  
         protected override void OnAppearing()

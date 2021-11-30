@@ -2,15 +2,15 @@
 <pages:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
-             xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup" xmlns:topog="clr-namespace:TOPOG" x:DataType="topog:Sh"
+             xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup" xmlns:topog="clr-namespace:TOPOG"
                  x:Class="TOPOG.ToastPage.ToastPicet">
     <!--Animations use example-->
     <pages:PopupPage.Animation>
         <animations:ScaleAnimation 
       PositionIn="Center"
       PositionOut="Center"
-      ScaleIn="1.2"
-      ScaleOut="0.8"
+      ScaleIn="1.2" 
+      ScaleOut="0.8" 
       DurationIn="400"
       DurationOut="300"
       EasingIn="SinOut"

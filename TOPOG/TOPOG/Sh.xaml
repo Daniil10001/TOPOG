@@ -15,7 +15,7 @@
         <Tab Title="Abris">
             <ShellContent Route="Abris" ContentTemplate="{DataTemplate local:Abris}" />
         </Tab>
-        <Tab Title="Paint">
+        <Tab Title="Paint"> 
             <ShellContent Route="Paint" ContentTemplate="{DataTemplate local:Paint}" />
         </Tab>
     </FlyoutItem>

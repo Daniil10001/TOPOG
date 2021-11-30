@@ -15,7 +15,7 @@
                                 Detail="{Binding Addres}"
                                 TextColor="Black"
                                 DetailColor="Black"
-                                />
+                                /> 
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
