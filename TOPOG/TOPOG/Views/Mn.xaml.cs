@@ -14,7 +14,7 @@ using Android.Content;
 namespace TOPOG.Views
 {
 
-    
+    [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class Mn : ContentPage
     {
         public List<Cave> CavesA { get; set; }
@@ -22,7 +22,7 @@ namespace TOPOG.Views
         public bool b = false;
         public Mn()
         {
-            InitializeComponent();
+            InitializeComponent(); 
             if (!File.Exists(path))
             {
                 //Create a file to write 
@@ -47,13 +47,17 @@ namespace TOPOG.Views
         }
         public async void ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
+            //Toast.MakeText(Android.App.Application.Context, "1", ToastLength.Long).Show();
             ((Semka)App.Current.Properties["Semka"]).save();
+            //Toast.MakeText(Android.App.Application.Context, "12", ToastLength.Long).Show();
             Cave c = CavesA[e.SelectedItemIndex];
+           
             App.Current.Properties["Cave"]=c;
             Pt.Text = "Статус:Обработка";
             Semka s = JsonConvert.DeserializeObject<Semka>(File.ReadAllText(c.PathA));
             App.Current.Properties["Semka"] = s;
             Pt.Text = "Статус:ОК";
+            
             await Shell.Current.GoToAsync("//Map");
         }
         public void Del(object sender, EventArgs e)

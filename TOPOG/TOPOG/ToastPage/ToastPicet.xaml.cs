@@ -1,15 +1,16 @@
-﻿using Rg.Plugins.Popup.Extensions;
+﻿using Android.Widget;
+using Rg.Plugins.Popup.Extensions;
 using Rg.Plugins.Popup.Pages;
 using System;
 using System.Threading.Tasks;
 using TOPOG.Views;
 using Xamarin.Forms;
-
+ 
 namespace TOPOG.ToastPage
 {
     public partial class ToastPicet : PopupPage
     {
-        private int k { get; set; }
+        private int k { get; set; } 
         public ToastPicet(Predst pr)
         {
             InitializeComponent();
@@ -45,9 +46,17 @@ namespace TOPOG.ToastPage
 
         private async void Save(object sender, EventArgs e)
         {
-            App.Current.Properties["Rv"] = new Predst(new Izm(Convert.ToDouble(xo.Text), Convert.ToDouble(yo.Text), Convert.ToDouble(zo.Text)),Ot.Text,To.Text,k);
-            App.Current.Properties["IC"] = true;
-            await Navigation.PopPopupAsync();
+            try
+            {
+                App.Current.Properties["Rv"] = new Predst(new Izm(Convert.ToDouble(xo.Text), Convert.ToDouble(yo.Text), Convert.ToDouble(zo.Text)),
+                    Ot.Text.Replace(" ",""), To.Text.Replace(" ", ""), k);
+                App.Current.Properties["IC"] = true;
+                await Navigation.PopPopupAsync();
+            }
+            catch (Exception ex)
+            {
+                Toast.MakeText(Android.App.Application.Context, "Неправильно введены данные!", ToastLength.Long).Show();
+            }
         }
 
         private async void Close(object sender, EventArgs e)

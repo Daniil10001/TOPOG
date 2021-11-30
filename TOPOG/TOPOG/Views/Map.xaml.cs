@@ -12,11 +12,10 @@ using Xamarin.Forms.Xaml;
 namespace TOPOG.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-
     public partial class Map : ContentPage
     {
         public List<Predst> prd { get; set; }
-        public string nach { get; set; }
+        public string nach { get; set; } 
         public Semka sm { get; set; }
         public Map()
         {
@@ -48,7 +47,9 @@ namespace TOPOG.Views
             {
                 //Toast.MakeText(Android.App.Application.Context, "ch", ToastLength.Long).Show();
                 Picets.ItemsSource = null;
-                prd = Builder.obratn((new Builder(sm)).dfs(nach));
+                
+                if (Srt.IsToggled) prd = Builder.obratn((new Builder(sm)).dfs(nach));
+                else prd = Builder.obratn1((new Builder(sm)).dfs(nach));
                 Picets.ItemsSource = prd;
                 this.BindingContext = this;
             }
@@ -57,7 +58,19 @@ namespace TOPOG.Views
 
         private async void Picets_ItemTapped(object sender, ItemTappedEventArgs e)
         {
+            App.Current.Properties["IC"] = false;
             await Navigation.PushPopupAsync(new ToastPicet((Predst)e.Item));
+            while (!(bool)App.Current.Properties["IC"]) await Task.Delay(100);
+            Predst prd = (Predst)App.Current.Properties["Rv"], pr = (Predst)e.Item;
+            if (prd == null) return;
+            sm.sdvig.Remove(pr.ot + "!@TOPOG@!" + pr.to);
+            sm.pereh[pr.ot].Remove(pr.to);
+            if (!sm.pereh.ContainsKey(prd.ot)) sm.pereh[prd.ot] = new HashSet<string>();
+            sm.pereh[prd.ot].Add(prd.to);
+            sm.sdvig[prd.ot + "!@TOPOG@!" + prd.to] = new Izm(prd.x, prd.y, prd.z);
+            App.Current.Properties["Semka"] = sm;
+            up();
+
         }
 
         private async void Create(object sender, EventArgs e)
@@ -68,11 +81,8 @@ namespace TOPOG.Views
             Predst prd = (Predst)App.Current.Properties["Rv"];
             if (prd == null) return;
             if (!sm.pereh.ContainsKey(prd.ot)) sm.pereh[prd.ot] = new HashSet<string>();
-            //if (!sm.pereh.ContainsKey(prd.to)) sm.pereh[prd.to] = new HashSet<string>();
             sm.pereh[prd.ot].Add(prd.to);
-            //sm.pereh[prd.to].Add(prd.ot);
             sm.sdvig[prd.ot+"!@TOPOG@!"+prd.to] = new Izm(prd.x, prd.y, prd.z);
-            sm.sdvig[prd.to+ "!@TOPOG@!" + prd.ot] = new Izm(prd.x, prd.y, prd.z);
             App.Current.Properties["Semka"] = sm;
             up();
         }
@@ -80,9 +90,9 @@ namespace TOPOG.Views
         private void TextChanged(object sender, EventArgs e)
         {
             
-            sm.nach = NachP.Text;
+            sm.nach = NachP.Text.Replace(" ","");
             App.Current.Properties["Semka"] = sm;
-            nach = NachP.Text;
+            nach = NachP.Text.Replace(" ","");
             up();
         }
 
@@ -91,8 +101,52 @@ namespace TOPOG.Views
             sm = (Semka)App.Current.Properties["Semka"];
             nach = sm.nach;
             NachP.Text = sm.nach;
+            //Toast.MakeText(Android.App.Application.Context, "123", ToastLength.Long).Show();
             sm.save();
             up();
+        }
+
+        private void Srt_Toggled(object sender, ToggledEventArgs e)
+        {
+            if (Srt.IsToggled) SrtT.Text = "По нитке";
+            else SrtT.Text = "По пикетам";
+            if (sm!=null)
+            up();
+        }
+
+        private async void Splei(object sender, EventArgs e)
+        {
+
+            SwipeItem sw = ((SwipeItem)sender);
+            Predst pr = (Predst)sw.BindingContext;
+            App.Current.Properties["IC"] = false;
+            await Navigation.PushPopupAsync(new SplView(pr.to));
+            while (!(bool)App.Current.Properties["IC"]) await Task.Delay(100);
+            sm = (Semka)App.Current.Properties["Semka"];
+
+        }
+        private void Del(object sender, EventArgs e)
+        {
+            SwipeItem sw = ((SwipeItem)sender);
+            Predst pr = (Predst)sw.BindingContext;
+            sm.sdvig.Remove(pr.ot+ "!@TOPOG@!" + pr.to);
+            sm.pereh[pr.ot].Remove(pr.to);
+            App.Current.Properties["Semka"] = sm;
+            up();
+            //Toast.MakeText(Android.App.Application.Context, sw.BindingContext.GetType().Name, ToastLength.Long).Show();
+        }
+
+        private async void Splplus(object sender, EventArgs e)
+        {
+            App.Current.Properties["IC"] = false;
+            await Navigation.PushPopupAsync(new SplView(""));
+            while (!(bool)App.Current.Properties["IC"]) await Task.Delay(100);
+            sm = (Semka)App.Current.Properties["Semka"];
+        }
+
+        private void Pereh(object sender, EventArgs e)
+        {
+            App.Current.Properties["IC"] = false;
         }
     }
 }

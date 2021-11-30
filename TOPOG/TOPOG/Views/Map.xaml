@@ -8,7 +8,9 @@
         <StackLayout PropertyChanged="PropertyChanged">
             <StackLayout Orientation="Horizontal">
                 <Button Clicked="Create" Text="Новый пикет"/>
-                <Entry Placeholder="Начальный пикет" x:Name="NachP" Completed="TextChanged" />
+                <Entry Placeholder="Начальный пикет" x:Name="NachP" Completed="TextChanged" WidthRequest="50"/>
+                <Switch x:Name="Srt" Toggled="Srt_Toggled" IsToggled="True"/>
+                <Label x:Name="SrtT" FontSize="Medium" VerticalOptions="Center"/>
             </StackLayout>
             <Label Text="" x:Name="Prn"></Label>
             <!--<Button Clicked="Button_Clicked"></Button>-->
@@ -17,41 +19,32 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
-                                <StackLayout Orientation="Horizontal" Padding="5,0,0,0">
-                                    <Label  FontSize="19.2" Text="{Binding otstup, StringFormat='{0}'}"/>
-                                    <Label  FontSize="19.2" Text="{Binding ot, StringFormat='{0}'}" HorizontalTextAlignment="Start"/>
-                                    <Label  Text="->" FontSize="19.2"/>
-                                    
-                                    <Label  FontSize="19.2" Text="{Binding to, StringFormat='{0}  '}" HorizontalTextAlignment="Center"/>
-                                    
-                                    <Label  Text="{Binding x, StringFormat='{0}'}" FontSize="19.2" HorizontalTextAlignment="Center" />
-                                    <Label  Text="{Binding y, StringFormat='{0}'}" FontSize="19.2" HorizontalTextAlignment="Center" />
-                                    <Label  Text="{Binding z, StringFormat='{0}'}" FontSize="19.2" HorizontalTextAlignment="Center" />
-                                </StackLayout>
+                                <SwipeView>
+                                    <SwipeView.RightItems>
+                                        <SwipeItem Text="Delete"
+                                    BackgroundColor="Red"
+                                    Invoked="Del" />
+                                        <SwipeItem Text="Сплеи"
+                                    BackgroundColor="Blue" 
+                                    Invoked="Splei" />
+                                    </SwipeView.RightItems>
+                                    <StackLayout Orientation="Horizontal" Padding="5,0,0,0" Background="White">
+                                        <Label  FontSize="19.2" Text="{Binding otstup, StringFormat='{0}'}"/>
+                                        <Label  FontSize="19.2" Text="{Binding ot, StringFormat='{0}'}" HorizontalTextAlignment="Start"/>
+                                        <Label  Text="->" FontSize="19.2"/>
+                                        <Label  FontSize="19.2" Text="{Binding to, StringFormat='{0}  '}" HorizontalTextAlignment="Center"/>
+                                        <Label  Text="{Binding x, StringFormat='{0}'}" FontSize="19.2" HorizontalTextAlignment="Center" />
+                                        <Label  Text="{Binding y, StringFormat='{0}'}" FontSize="19.2" HorizontalTextAlignment="Center" />
+                                        <Label  Text="{Binding z, StringFormat='{0}'}" FontSize="19.2" HorizontalTextAlignment="Center" />
+                                    </StackLayout>
+                                </SwipeView>
                             </ViewCell>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
             </ScrollView>
-            <Grid Padding="10">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="200" />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition  Height="100"/>
-                    <RowDefinition  Height="100"/>
-                </Grid.RowDefinitions>
-                <Button Text="Пикет" Grid.Column="1" Grid.Row="0"/>
-                <Button Text="Еж" Grid.Column="1" Grid.Row="1"/>
-                <skia:SKCanvasView Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" BackgroundColor="Black" x:Name="canvasView"
-                           PaintSurface="canvasView_PaintSurface">
-                    <skia:SKCanvasView.Effects>
-                        <tt1:TouchEffect Capture="True"
-                            TouchAction="TouchEffect_TouchAction" />
-                    </skia:SKCanvasView.Effects>
-                </skia:SKCanvasView>
-            </Grid>
+            <Button Text="Пикет" Grid.Column="1" Grid.Row="0" Clicked="Pereh"/>
+            <Button Text="Сплеи" Grid.Column="1" Grid.Row="1" Clicked="Splplus"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -16,7 +16,7 @@ namespace TOPOG.Views
             Description = "";
         }
         public string Description { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } 
         public string Locat { get; set; }
         public string PathA
         {
@@ -33,18 +33,6 @@ namespace TOPOG.Views
         }
 
     }
-    public class Risun
-    {
-        public Risun()
-        {
-            pts = new SKPath();
-            pant = "";
-            fill = "";
-        }
-        public SKPath pts { get; set; }
-        public string pant { get; set; }
-        public string fill { get; set; }
-    }
     public class Izm
     {
         public Izm(double xn, double yn, double zn)
@@ -52,31 +40,55 @@ namespace TOPOG.Views
             x = xn;
             y = yn;
             x = xn;
-
         }
         public double x { get; set; }
         public double y { get; set; }
         public double z { get; set; }
+        
     }
-    public class Ezi
+    public class Ez
     {
-        public Ezi()
+        public Ez(double xn, double yn, double zn, bool b)
         {
-            sdv = null;
-            ezi = new List<Izm>();
+            x = xn;
+            y = yn;
+            x = xn;
+            orient = b;
         }
-        public Izm sdv { get; set; }
-        public List<Izm> ezi { get; set; }
+        public double x { get; set; }
+        public double y { get; set; }
+        public double z { get; set; }
+        public bool orient { get; set; }
+
+    }
+    public class Spley
+    {
+        public Spley()
+        {
+            spl = new HashSet<Ez>();
+        }
+        public HashSet<Ez> spl { get; set; }
     }
     public class abri
     {
         public abri(string name)
         {
-            ris = new List<Risun>();
             name = "";
+            Paths = new Dictionary<SKPaint, List<SKPath>>();
+            Point = new Dictionary<SKPaint, List<SKPoint>>();
+            Shape = new Dictionary<Tuple<SKPaint, SKPaint>, List<SKPath>>();
         }
-        public List<Risun> ris { get; set; }
         public string name { get; set; }
+
+        public Dictionary<SKPaint, List<SKPath>> Paths = new Dictionary<SKPaint, List<SKPath>>();
+        
+        public Dictionary<SKPaint, List<SKPoint>> Point = new Dictionary<SKPaint, List<SKPoint>>();
+        
+        public Dictionary<Tuple<SKPaint, SKPaint>, List<SKPath>> Shape = new Dictionary<Tuple<SKPaint, SKPaint>, List<SKPath>>();
+        public static List<Tuple<abri,abri>> getabr(string pth)
+        {
+            return JsonConvert.DeserializeObject<List<Tuple<abri, abri>>>(File.ReadAllText(pth));
+        }
     }
     public class Semka
     {
@@ -86,18 +98,20 @@ namespace TOPOG.Views
             Description = "";
             Mest = "";
             nach = "";
-            pwe = new Dictionary<string, Ezi>();
+            splei = new Dictionary<string, Spley>();
             pereh = new Dictionary<string, HashSet<string>>();
             sdvig = new Dictionary<string, Izm>();
+            abrisy = new List<Tuple<string, string>>();
         }
         public string Name { get; set; }
         public string Description { get; set; }
         public string Mest { get; set; }
         public string nach { get; set; }
-        public Dictionary<string, Ezi> pwe { get; set; }
+        public Dictionary<string, Spley> splei { get; set; }
         public Dictionary<string, HashSet<string>> pereh { get; set; }
         public Dictionary<string, Izm> sdvig { get; set; }
-        public string PathA
+        public List<Tuple<string, string>> abrisy { get; set; }
+        /*public string PathA
         {
             get
             {
@@ -110,7 +124,7 @@ namespace TOPOG.Views
                     return null;
                 }
             }
-        }
+        }*/
         public void save()
         {
             if (Name != "")
@@ -165,9 +179,26 @@ namespace TOPOG.Views
             foreach (string p in ps.berh.Keys)
             {
                 Tuple<Izm,Postr> it = ps.berh[p];
-                pr.Add(new Predst(it.Item1,ps.nm,p,i+1));
+                pr.Add(new Predst(it.Item1,ps.nm,p,i));
                 if (it.Item2!=null)
                     pr.AddRange(obratn(it.Item2,i+1));
+            }
+            return pr;
+        }
+
+        static public List<Predst> obratn1(Postr ps, int i = 0)
+        {
+            List<Predst> pr = new List<Predst>();
+            foreach (string p in ps.berh.Keys)
+            {
+                Tuple<Izm, Postr> it = ps.berh[p];
+                pr.Add(new Predst(it.Item1, ps.nm, p, i));
+            }
+            foreach (string p in ps.berh.Keys)
+            {
+                Tuple<Izm, Postr> it = ps.berh[p];
+                if (it.Item2 != null)
+                    pr.AddRange(obratn(it.Item2));
             }
             return pr;
         }

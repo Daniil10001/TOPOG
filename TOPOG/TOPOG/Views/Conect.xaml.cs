@@ -16,7 +16,7 @@ using Android.OS;
 namespace TOPOG.Views
 {
     //[XamlCompilation(XamlCompilationOptions.Compile)]
-    public class Devi
+    public class Devi 
     {
         public string Addres { get; set; }
         public string Name { get; set; }
