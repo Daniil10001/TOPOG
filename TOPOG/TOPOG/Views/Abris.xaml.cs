@@ -249,7 +249,7 @@ namespace TOPOG.Views
                 return;
             else
             {
-                if (Name=="" && !(bool)App.Current.Properties["IC"])
+                if (Name == "" && !(bool)App.Current.Properties["IC"])
                 {
                     App.Current.Properties["IC"] = false;
                     //await Navigation.PopAllPopupAsync();
@@ -257,19 +257,20 @@ namespace TOPOG.Views
                     while (!(bool)App.Current.Properties["IC"])
                         await Task.Delay(100);
                     Name = (string)App.Current.Properties["Nm"];
-                } 
+                }
             }
             abri a = new abri(Name);
-            a.Paths = completedPaths; 
-            a.Point = completedPoint;  
+            a.Paths = completedPaths;
+            a.Point = completedPoint;
             a.Shape = completedShape;
-            string createText = JsonConvert.SerializeObject(a);  
-            string path = Android.App.Application.Context.GetExternalFilesDir("").ToString() + "/" + ((Semka)App.Current.Properties["Semka"]).Name+ "@T@" + Name + ".abr";
+            string createText = JsonConvert.SerializeObject(a);
+            string path = Android.App.Application.Context.GetExternalFilesDir("").ToString() + "/" + ((Semka)App.Current.Properties["Semka"]).Name + "@T@" + Name + ".abr";
             File.WriteAllText(path, createText);
         }
 
         private async void Button_Clicked(object sender, EventArgs e)
         {
+
             if (((Semka)App.Current.Properties["Semka"]).Name=="")
                 return;
             if (Name == "")
@@ -291,6 +292,10 @@ namespace TOPOG.Views
             completedPaths=a.Paths;
             completedPoint=a.Point;
             completedShape=a.Shape;
+            ((Semka)App.Current.Properties["Semka"]).abrisy.Add(new Tuple<string, string>("asdff", "asdff1"));
+            ((Semka)App.Current.Properties["Semka"]).abrisy.Add(new Tuple<string, string>("asdf", "asdf1"));
+            ((Semka)App.Current.Properties["Semka"]).abrisy.Add(new Tuple<string, string>("asd", "asd1"));
+            await Navigation.PushPopupAsync(new Vibor());
         }
     }
 }
