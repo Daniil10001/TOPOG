@@ -14,10 +14,10 @@ namespace TOPOG
         public App()
         {
             Current.Properties.Add("Cave",new Cave());
-            Current.Properties.Add("IC", new bool());
-            Current.Properties.Add("IC2", new bool());
+            Current.Properties.Add("IC", true);
+            Current.Properties.Add("IC2", true);
             Current.Properties.Add("IC3", new bool());
-            Current.Properties.Add("Nm", ""); 
+            Current.Properties.Add("Nm", "");  
             Current.Properties.Add("Rv", new Predst(new Izm(0,0,0),"","",0));
             Current.Properties["Rv"] = null;
             Current.Properties.Add("Semka",new Semka());

@@ -258,12 +258,12 @@ namespace TOPOG.Views
                         await Task.Delay(100);
                     Name = (string)App.Current.Properties["Nm"];
                 } 
-            } 
+            }
             abri a = new abri(Name);
-            a.Paths = completedPaths;
-            a.Point = completedPoint;
+            a.Paths = completedPaths; 
+            a.Point = completedPoint;  
             a.Shape = completedShape;
-            string createText = JsonConvert.SerializeObject(a); 
+            string createText = JsonConvert.SerializeObject(a);  
             string path = Android.App.Application.Context.GetExternalFilesDir("").ToString() + "/" + ((Semka)App.Current.Properties["Semka"]).Name+ "@T@" + Name + ".abr";
             File.WriteAllText(path, createText);
         }
