@@ -4,7 +4,7 @@
              xmlns:skia="clr-namespace:SkiaSharp.Views.Forms;assembly=SkiaSharp.Views.Forms"
              xmlns:tt1="clr-namespace:TouchTracking.Forms;assembly=TouchTracking.Forms"
              x:Class="TOPOG.Views.Abris"
-             Title="Abris">
+             Title="Абрис">
     <ContentPage.Content>
         <StackLayout PropertyChanged="StackLayout_PropertyChanged">
             <StackLayout Orientation="Horizontal">
@@ -12,11 +12,11 @@
                     <StackLayout Orientation="Horizontal">
                         <Button  />
                         <Button />
-                    </StackLayout>
-                </ScrollView> 
+                    </StackLayout>  
+                </ScrollView>   
                 <Button Text="Переключиться" Clicked="Button_Clicked"></Button>
             </StackLayout>
-            <Label Text="Scale {0}"/>
+            <Label x:Name="nm"/>
             <skia:SKCanvasView x:Name="canvasView" Background="Black"
                            PaintSurface="canvasView_PaintSurface"  VerticalOptions="CenterAndExpand" HeightRequest="700">
                     <skia:SKCanvasView.Effects>

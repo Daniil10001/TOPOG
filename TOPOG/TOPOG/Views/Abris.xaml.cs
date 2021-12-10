@@ -43,11 +43,12 @@ namespace TOPOG.Views
         };
         private void canvasView_PaintSurface(object sender, SkiaSharp.Views.Forms.SKPaintSurfaceEventArgs args)
         {
+            nm.Text = Name;
             try
             {
                 SKCanvas canvas = args.Surface.Canvas;
                 canvas.Clear();
-                if (count == 1)
+                if (count <= 1)
                 {
                     foreach (SKPath path in inProgressPaths.Values)
                     {
@@ -62,8 +63,12 @@ namespace TOPOG.Views
                 foreach (SKPaint pn in completedPaths.Keys)
                 {
                     foreach (SKPath pth in completedPaths[pn])
-                    {
+                    { 
                         canvas.DrawPath(pth, pn);
+                        if (count == 0)
+                        {
+                            //Toast.MakeText(Android.App.Application.Context, completedPaths.Count.ToString(), ToastLength.Long).Show();
+                        }
                     }
                 }
                 foreach (Tuple<SKPaint, SKPaint> pn in completedShape.Keys)
@@ -242,7 +247,6 @@ namespace TOPOG.Views
 
         private async void StackLayout_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            Name = (String)App.Current.Properties["Nm"];
             if (((Semka)App.Current.Properties["Semka"]).Name == "")
                 return;
             else
@@ -259,6 +263,7 @@ namespace TOPOG.Views
             }
             if (Name != "")
             {
+                
                 abri a = new abri(Name);
                 a.Paths = completedPaths;
                 a.Point = completedPoint;
@@ -300,10 +305,16 @@ namespace TOPOG.Views
             Name = (string)App.Current.Properties["Nm"];
             abri a = new abri(Name);
             if (File.Exists(Android.App.Application.Context.GetExternalFilesDir("").ToString() + "/" + ((Semka)App.Current.Properties["Semka"]).Name + "@T@" + Name + ".abr"))
-                a = abri.getabr(Android.App.Application.Context.GetExternalFilesDir("").ToString() + "/" + ((Semka)App.Current.Properties["Semka"]).Name + "@T@" + Name + ".abr");
-            completedPaths =a.Paths;
-            completedPoint=a.Point;
+
+            { a = abri.getabr(Android.App.Application.Context.GetExternalFilesDir("").ToString() + "/" + ((Semka)App.Current.Properties["Semka"]).Name + "@T@" + Name + ".abr");
+                
+            }
+            completedPaths =new Dictionary<SKPaint, List<SKPath>>(a.Paths);
+            Toast.MakeText(Android.App.Application.Context, completedPaths.Count.ToString(), ToastLength.Long).Show();
+            Toast.MakeText(Android.App.Application.Context, a.Paths.Count.ToString(), ToastLength.Long).Show();
+            completedPoint =a.Point;
             completedShape=a.Shape;
+            Toast.MakeText(Android.App.Application.Context, "Clanceled", ToastLength.Long).Show();
             canvasView.InvalidateSurface();
         }
     }
