@@ -1,7 +1,4 @@
-﻿using Android.Widget;
-using Newtonsoft.Json;
-using Rg.Plugins.Popup.Extensions;
-using Rg.Plugins.Popup.Services;
+﻿using Rg.Plugins.Popup.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -53,7 +50,7 @@ namespace TOPOG.Views
                 Picets.ItemsSource = prd;
                 this.BindingContext = this;
             }
-
+             
         }
 
         private async void Picets_ItemTapped(object sender, ItemTappedEventArgs e)

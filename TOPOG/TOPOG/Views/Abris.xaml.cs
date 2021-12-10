@@ -1,20 +1,18 @@
 ﻿using Android.Widget;
-using Newtonsoft.Json;
 using Rg.Plugins.Popup.Extensions;
 using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using TOPOG.ToastPage;
 using TouchTracking;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
+using static TOPOG.Views.Serialization_Magic;
 
 namespace TOPOG.Views
-{ 
+{
     public partial class Abris : ContentPage
     {
         public Abris()
@@ -249,9 +247,9 @@ namespace TOPOG.Views
                 return;
             else
             {
-                if (Name == "" && !(bool)App.Current.Properties["IC"])
+                if (Name == "" && (bool)App.Current.Properties["IC"])
                 {
-                    App.Current.Properties["IC"] = false;
+                    App.Current.Properties["IC"] =false;
                     //await Navigation.PopAllPopupAsync();
                     await Navigation.PushPopupAsync(new Vibor());
                     while (!(bool)App.Current.Properties["IC"])
@@ -259,13 +257,21 @@ namespace TOPOG.Views
                     Name = (string)App.Current.Properties["Nm"];
                 }
             }
-            abri a = new abri(Name);
-            a.Paths = completedPaths;
-            a.Point = completedPoint;
-            a.Shape = completedShape;
-            string createText = JsonConvert.SerializeObject(a);
-            string path = Android.App.Application.Context.GetExternalFilesDir("").ToString() + "/" + ((Semka)App.Current.Properties["Semka"]).Name + "@T@" + Name + ".abr";
-            File.WriteAllText(path, createText);
+            if (Name != "")
+            {
+                abri a = new abri(Name);
+                a.Paths = completedPaths;
+                a.Point = completedPoint;
+                a.Shape = completedShape;
+                /*string createText = JsonConvert.SerializeObject(a, new JsonSerializerSettings()
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
+                string path = Android.App.Application.Context.GetExternalFilesDir("").ToString() + "/" + ((Semka)App.Current.Properties["Semka"]).Name + "@T@" + Name + ".abr";
+                File.WriteAllText(path, createText);*/
+                string path = Android.App.Application.Context.GetExternalFilesDir("").ToString() + "/" + ((Semka)App.Current.Properties["Semka"]).Name + "@T@" + Name + ".abr";
+                Serial.Save(abris.crt(a), typeof(abris), path);
+            }
         }
 
         private async void Button_Clicked(object sender, EventArgs e)
@@ -273,29 +279,32 @@ namespace TOPOG.Views
 
             if (((Semka)App.Current.Properties["Semka"]).Name=="")
                 return;
-            if (Name == "")
+            Toast.MakeText(Android.App.Application.Context, Name, ToastLength.Long).Show();
+            if (Name != "")
             {
-                abri ab = new abri(Name);
-                ab.Paths = completedPaths;
-                ab.Point = completedPoint;
-                ab.Shape = completedShape;
-                string createText = JsonConvert.SerializeObject(ab);
+                abri ab = new abri(Name,completedPaths,completedPoint,completedShape);
+                //
+                /*string createText = JsonConvert.SerializeObject(ab, new JsonSerializerSettings()
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });*/
+                //Toast.MakeText(Android.App.Application.Context, "Clanceled", ToastLength.Long).Show();
+                //File.WriteAllText(path, createText);
                 string path = Android.App.Application.Context.GetExternalFilesDir("").ToString() + "/" + ((Semka)App.Current.Properties["Semka"]).Name + "@T@" + Name + ".abr";
-                File.WriteAllText(path, createText);
+                Serial.Save(abris.crt(ab), typeof(abris), path);
             }
-            App.Current.Properties["IC"] = true;
+            App.Current.Properties["IC"] = false;
             await Navigation.PushPopupAsync(new Vibor());
             while (!(bool)App.Current.Properties["IC"])
                 await Task.Delay(100);
             Name = (string)App.Current.Properties["Nm"];
-            abri a =abri.getabr(Android.App.Application.Context.GetExternalFilesDir("").ToString() + "/" + ((Semka)App.Current.Properties["Semka"]).Name + "@T@" + Name + ".abr");
-            completedPaths=a.Paths;
+            abri a = new abri(Name);
+            if (File.Exists(Android.App.Application.Context.GetExternalFilesDir("").ToString() + "/" + ((Semka)App.Current.Properties["Semka"]).Name + "@T@" + Name + ".abr"))
+                a = abri.getabr(Android.App.Application.Context.GetExternalFilesDir("").ToString() + "/" + ((Semka)App.Current.Properties["Semka"]).Name + "@T@" + Name + ".abr");
+            completedPaths =a.Paths;
             completedPoint=a.Point;
             completedShape=a.Shape;
-            ((Semka)App.Current.Properties["Semka"]).abrisy.Add(new Tuple<string, string>("asdff", "asdff1"));
-            ((Semka)App.Current.Properties["Semka"]).abrisy.Add(new Tuple<string, string>("asdf", "asdf1"));
-            ((Semka)App.Current.Properties["Semka"]).abrisy.Add(new Tuple<string, string>("asd", "asd1"));
-            await Navigation.PushPopupAsync(new Vibor());
+            canvasView.InvalidateSurface();
         }
     }
 }

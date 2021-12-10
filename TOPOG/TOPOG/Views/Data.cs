@@ -2,18 +2,72 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using Newtonsoft.Json;
 using SkiaSharp;
+using Android.Widget;
+using System.Xml.Serialization;
+using Newtonsoft.Json;
+using static TOPOG.Views.Serialization_Magic;
 
 namespace TOPOG.Views
 {
+
+    public class Serial
+    {
+        public static void Save(object obj,Type T,string path)
+        {
+            try
+            {
+                /*FileStream fs = new FileStream(path, FileMode.OpenOrCreate,
+                                       FileAccess.ReadWrite,
+                                       FileShare.None);
+                XmlSerializer serializer = new XmlSerializer(T);
+                //Invisionware.Serialization.IXmlSerializer;
+                TextWriter writer = new StreamWriter(fs, Encoding.UTF8);
+                serializer.Serialize(writer, obj);
+                writer.Close();
+                fs.Close();*/
+                File.WriteAllText(path, JsonConvert.SerializeObject(obj));
+            }
+            catch(Exception ex)
+            {
+                Toast.MakeText(Android.App.Application.Context, ex.ToString(), ToastLength.Long).Show();
+                File.WriteAllText(path+".txt", ex.ToString());
+            }
+        }
+        public static object Open(Type T,string path)
+        {
+            try
+            {
+                /*XmlSerializer serializer = new XmlSerializer(T);
+                FileStream fs = new FileStream(path, FileMode.Open);
+                object o = serializer.Deserialize(fs);
+                fs.Close();
+                return o;*/
+                return JsonConvert.DeserializeObject(File.ReadAllText(path), T);
+            }
+            catch (Exception ex)
+            {
+                Toast.MakeText(Android.App.Application.Context, ex.ToString(), ToastLength.Long).Show();
+                File.WriteAllText(path + ".txt", ex.ToString());
+                return null;
+            }
+        }
+    }
     public class Cave
     {
+
+
         public Cave()
         {
             Name = "";
             Locat = "";
             Description = "";
+        }
+        public Cave(string a,string b,string c)
+        {
+            Name = a;
+            Locat = b;
+            Description = c;
         }
         public string Description { get; set; }
         public string Name { get; set; } 
@@ -67,6 +121,10 @@ namespace TOPOG.Views
         {
             spl = new HashSet<Ez>();
         }
+        public Spley(HashSet<Ez> a)
+        {
+            spl = a;
+        }
         public HashSet<Ez> spl { get; set; }
     }
     public class abri
@@ -78,16 +136,24 @@ namespace TOPOG.Views
             Point = new Dictionary<SKPaint, List<SKPoint>>();
             Shape = new Dictionary<Tuple<SKPaint, SKPaint>, List<SKPath>>();
         }
+        public abri(string name, Dictionary<SKPaint, List<SKPath>> a,Dictionary<SKPaint, List<SKPoint>> b,Dictionary<Tuple<SKPaint, SKPaint>, List<SKPath>>c) 
+        {
+            name = "";
+            Paths = a;
+            Point = b;
+            Shape = c;
+        }
         public string name { get; set; }
 
         public Dictionary<SKPaint, List<SKPath>> Paths = new Dictionary<SKPaint, List<SKPath>>();
-        
+
         public Dictionary<SKPaint, List<SKPoint>> Point = new Dictionary<SKPaint, List<SKPoint>>();
-        
+
         public Dictionary<Tuple<SKPaint, SKPaint>, List<SKPath>> Shape = new Dictionary<Tuple<SKPaint, SKPaint>, List<SKPath>>();
-        public static List<Tuple<abri,abri>> getabr(string pth)
+        public static abri getabr(string pth)
         {
-            return JsonConvert.DeserializeObject<List<Tuple<abri, abri>>>(File.ReadAllText(pth));
+            return abris.get((abris)Serial.Open(typeof(abris),pth));
+            //return JsonConvert.DeserializeObject<abri>(File.ReadAllText(pth));
         }
     }
     public class Semka
@@ -102,6 +168,17 @@ namespace TOPOG.Views
             pereh = new Dictionary<string, HashSet<string>>();
             sdvig = new Dictionary<string, Izm>();
             abrisy = new List<Tuple<string, string>>();
+        }
+        public Semka(string a, string b, string c, string d, Dictionary<string, Spley> e, Dictionary<string, HashSet<string>> f, Dictionary<string, Izm> g, List<Tuple<string, string>> h)
+        {
+            Name = a;
+            Description = b;
+            Mest = c;
+            nach = d;
+            splei = e;
+            pereh = f;
+            sdvig = g;
+            abrisy = h;
         }
         public string Name { get; set; }
         public string Description { get; set; }
@@ -130,8 +207,9 @@ namespace TOPOG.Views
             if (Name != "")
             {
                 string pth = Android.App.Application.Context.GetExternalFilesDir("").ToString() + "/" + Name + ".cv";
-                string createText = JsonConvert.SerializeObject(this);
-                File.WriteAllText(pth, createText);
+                /*string createText = JsonConvert.SerializeObject(this);
+                File.WriteAllText(pth, createText);*/
+                Serial.Save(this, this.GetType(), pth);
             }
         }
     }
