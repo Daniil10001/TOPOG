@@ -48,27 +48,30 @@ namespace TOPOG.Views
             {
                 SKCanvas canvas = args.Surface.Canvas;
                 canvas.Clear();
-                if (count <= 1)
+                SKCanvas c;
+                canvas.Scale(1f);
+
+                if (count <= 1 && type != -1)
                 {
                     foreach (SKPath path in inProgressPaths.Values)
                     {
-                        canvas.DrawPath(path, paint);
+                        SKPath p = new SKPath(path);
+                        p.Transform(SKMatrix.CreateTranslation(-dx, -dy));
+                        canvas.DrawPath(p, paint);
                     }
                 }
                 else
                 {
                     List<int> a = new List<int>();
-                    
+
                 }
                 foreach (SKPaint pn in completedPaths.Keys)
                 {
                     foreach (SKPath pth in completedPaths[pn])
-                    { 
-                        canvas.DrawPath(pth, pn);
-                        if (count == 0)
-                        {
-                            //Toast.MakeText(Android.App.Application.Context, completedPaths.Count.ToString(), ToastLength.Long).Show();
-                        }
+                    {
+                        SKPath p = new SKPath(pth);
+                        p.Transform(SKMatrix.CreateTranslation(-dx, -dy));
+                        canvas.DrawPath(p, paint);
                     }
                 }
                 foreach (Tuple<SKPaint, SKPaint> pn in completedShape.Keys)
@@ -86,13 +89,14 @@ namespace TOPOG.Views
                         canvas.DrawPoint(pth, pn);
                     }
                 }
+
             }
             catch
             {
 
             }
         }
-        void upPth(int p=-1)
+        void upPth(int p = -1)
         {
             List<SKPath> pth = completedPaths[paint];
             SKPath pt = pth[pth.Count() - 1];
@@ -101,9 +105,9 @@ namespace TOPOG.Views
                 pt = pth[p];
             else
                 p = pth.Count() - 1;
-            for (int i=0;i<pth.Count();i++)
+            for (int i = 0; i < pth.Count(); i++)
             {
-                if (i!=p)
+                if (i != p)
                 {
                     SKPath pt1 = pth[i];
                     pt = pth[p];
@@ -142,26 +146,25 @@ namespace TOPOG.Views
 
             }
         }
-
+        float dx = 0, dy = 0, scl = 1;
         SKPoint ConvertToPixel(TouchTrackingPoint pt)
         {
-            return new SKPoint((float)(canvasView.CanvasSize.Width * pt.X / canvasView.Width),
-                               (float)(canvasView.CanvasSize.Height * pt.Y / canvasView.Height));
+            return new SKPoint((float)(canvasView.CanvasSize.Width * pt.X / canvasView.Width + dx),
+                               (float)(canvasView.CanvasSize.Height * pt.Y / canvasView.Height + dy));
         }
         Dictionary<long, SKPath> inProgressPaths = new Dictionary<long, SKPath>();
 
-        Dictionary<SKPaint,List<SKPath>> completedPaths = new Dictionary<SKPaint, List<SKPath>>();
-        
+        Dictionary<SKPaint, List<SKPath>> completedPaths = new Dictionary<SKPaint, List<SKPath>>();
+
         Dictionary<SKPaint, List<SKPoint>> completedPoint = new Dictionary<SKPaint, List<SKPoint>>();
 
         Dictionary<Tuple<SKPaint, SKPaint>, List<SKPath>> completedShape = new Dictionary<Tuple<SKPaint, SKPaint>, List<SKPath>>(); //Tuple<SKPaint, SKPaint>
 
         string Name = "";
-
+        int type;
         int count = 0;
         private void TouchEffect_TouchAction(object sender, TouchTracking.TouchActionEventArgs args)
         {
-            int type = 0;
             if (Name == "")
                 return;
             switch (args.Type)
@@ -173,6 +176,14 @@ namespace TOPOG.Views
                         path.MoveTo(ConvertToPixel(args.Location));
                         inProgressPaths.Add(args.Id, path);
                         count += 1;
+                        if (count > 1)
+                        {
+                            type = -1;
+                        }
+                        else
+                        {
+                            type = 0;
+                        }
                         //Toast.MakeText(Android.App.Application.Context, JsonConvert.SerializeObject(paint), ToastLength.Long).Show();
                         canvasView.InvalidateSurface();
                     }
@@ -189,6 +200,22 @@ namespace TOPOG.Views
                         SKPath path = inProgressPaths[args.Id];
                         path.LineTo(ConvertToPixel(args.Location));
                         canvasView.InvalidateSurface();
+                        try
+                        {
+                            if (type == -1)
+                            {
+                                float sx = 0, sy = 0,rx=0,ry=0, kl = 0;
+                                foreach (long pn in inProgressPaths.Keys)
+                                {
+                                    sx -= inProgressPaths[pn].LastPoint.X - inProgressPaths[pn].GetPoint(inProgressPaths[pn].PointCount - 10).X;
+                                    sy -= inProgressPaths[pn].LastPoint.Y - inProgressPaths[pn].GetPoint(inProgressPaths[pn].PointCount - 10).Y;
+                                    kl += 1;
+                                }
+                                dx += sx / kl / 6;
+                                dy += sy / kl / 6;
+                            }
+                        }
+                        catch { }
                     }
                     break;
 
@@ -228,7 +255,7 @@ namespace TOPOG.Views
                         inProgressPaths.Remove(args.Id);
                         count -= 1;
                         canvasView.InvalidateSurface();
-                      
+
                     }
                     break;
 
@@ -236,17 +263,38 @@ namespace TOPOG.Views
                     if (inProgressPaths.ContainsKey(args.Id))
                     {
                         count -= 1;
-                        
+
                         //Toast.MakeText(Android.App.Application.Context, "Clanceled", ToastLength.Long).Show();
                         inProgressPaths.Remove(args.Id);
                         canvasView.InvalidateSurface();
                     }
                     break;
             }
+            nsvd = true;
         }
-
+        bool nsvd = false;
         private async void StackLayout_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
+            Toast.MakeText(Android.App.Application.Context, Name, ToastLength.Long).Show();
+            if (Name != "")
+            {
+                /*string createText = JsonConvert.SerializeObject(a, new JsonSerializerSettings()
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
+                string path = Android.App.Application.Context.GetExternalFilesDir("").ToString() + "/" + ((Semka)App.Current.Properties["Semka"]).Name + @"\\" + Name + ".abr";
+                File.WriteAllText(path, createText);*/
+                Toast.MakeText(Android.App.Application.Context, "I", ToastLength.Long).Show();
+                if (nsvd)
+                {
+
+                    nsvd = false;
+                    abri a = new abri(Name, completedPaths, completedPoint, completedShape);
+                    Toast.MakeText(Android.App.Application.Context, "Clanceled2", ToastLength.Long).Show();
+                    string path = Android.App.Application.Context.GetExternalFilesDir("").ToString() + "/" + ((Semka)App.Current.Properties["Semka"]).Name + @"\\" + Name + ".abr";
+                    Serial.Save(abris.crt(a), typeof(abris), path);
+                }
+            }
             if (((Semka)App.Current.Properties["Semka"]).Name == "")
                 return;
             else
@@ -259,24 +307,15 @@ namespace TOPOG.Views
                     while (!(bool)App.Current.Properties["IC"])
                         await Task.Delay(100);
                     Name = (string)App.Current.Properties["Nm"];
+                    abri a = new abri(Name);
+                    if (File.Exists(Android.App.Application.Context.GetExternalFilesDir("").ToString() + "/" + ((Semka)App.Current.Properties["Semka"]).Name + @"\\" + Name + ".abr"))
+                        a = abri.getabr(Android.App.Application.Context.GetExternalFilesDir("").ToString() + "/" + ((Semka)App.Current.Properties["Semka"]).Name + @"\\" + Name + ".abr");
+                    completedPaths = a.Paths;
+                    completedPoint = a.Point;
+                    completedShape = a.Shape;
                 }
             }
-            if (Name != "")
-            {
-                
-                abri a = new abri(Name);
-                a.Paths = completedPaths;
-                a.Point = completedPoint;
-                a.Shape = completedShape;
-                /*string createText = JsonConvert.SerializeObject(a, new JsonSerializerSettings()
-                {
-                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                });
-                string path = Android.App.Application.Context.GetExternalFilesDir("").ToString() + "/" + ((Semka)App.Current.Properties["Semka"]).Name + "@T@" + Name + ".abr";
-                File.WriteAllText(path, createText);*/
-                string path = Android.App.Application.Context.GetExternalFilesDir("").ToString() + "/" + ((Semka)App.Current.Properties["Semka"]).Name + "@T@" + Name + ".abr";
-                Serial.Save(abris.crt(a), typeof(abris), path);
-            }
+            
         }
 
         private async void Button_Clicked(object sender, EventArgs e)
@@ -284,36 +323,30 @@ namespace TOPOG.Views
 
             if (((Semka)App.Current.Properties["Semka"]).Name=="")
                 return;
-            Toast.MakeText(Android.App.Application.Context, Name, ToastLength.Long).Show();
+            //Toast.MakeText(Android.App.Application.Context, Name, ToastLength.Long).Show();
             if (Name != "")
             {
+                nsvd = false;
                 abri ab = new abri(Name,completedPaths,completedPoint,completedShape);
-                //
-                /*string createText = JsonConvert.SerializeObject(ab, new JsonSerializerSettings()
-                {
-                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                });*/
-                //Toast.MakeText(Android.App.Application.Context, "Clanceled", ToastLength.Long).Show();
-                //File.WriteAllText(path, createText);
-                string path = Android.App.Application.Context.GetExternalFilesDir("").ToString() + "/" + ((Semka)App.Current.Properties["Semka"]).Name + "@T@" + Name + ".abr";
+                string path = Android.App.Application.Context.GetExternalFilesDir("").ToString() + "/" + ((Semka)App.Current.Properties["Semka"]).Name + @"\\" + Name + ".abr";
                 Serial.Save(abris.crt(ab), typeof(abris), path);
             }
+            dx = 0;dy = 0;scl = 1;
             App.Current.Properties["IC"] = false;
             await Navigation.PushPopupAsync(new Vibor());
             while (!(bool)App.Current.Properties["IC"])
                 await Task.Delay(100);
             Name = (string)App.Current.Properties["Nm"];
             abri a = new abri(Name);
-            if (File.Exists(Android.App.Application.Context.GetExternalFilesDir("").ToString() + "/" + ((Semka)App.Current.Properties["Semka"]).Name + "@T@" + Name + ".abr"))
-
-            { a = abri.getabr(Android.App.Application.Context.GetExternalFilesDir("").ToString() + "/" + ((Semka)App.Current.Properties["Semka"]).Name + "@T@" + Name + ".abr");
-                
-            }
-            completedPaths =new Dictionary<SKPaint, List<SKPath>>(a.Paths);
-            Toast.MakeText(Android.App.Application.Context, completedPaths.Count.ToString(), ToastLength.Long).Show();
-            Toast.MakeText(Android.App.Application.Context, a.Paths.Count.ToString(), ToastLength.Long).Show();
+            if (File.Exists(Android.App.Application.Context.GetExternalFilesDir("").ToString() + "/" + ((Semka)App.Current.Properties["Semka"]).Name + @"\\" + Name + ".abr"))
+            { a = abri.getabr(Android.App.Application.Context.GetExternalFilesDir("").ToString() + "/" + ((Semka)App.Current.Properties["Semka"]).Name + @"\\" + Name + ".abr");}
+           
+            completedPaths = a.Paths;
+            //Toast.MakeText(Android.App.Application.Context, completedPaths.Count.ToString(), ToastLength.Long).Show();
+            //Toast.MakeText(Android.App.Application.Context, a.Paths.Count.ToString(), ToastLength.Long).Show();
             completedPoint =a.Point;
             completedShape=a.Shape;
+            
             Toast.MakeText(Android.App.Application.Context, "Clanceled", ToastLength.Long).Show();
             canvasView.InvalidateSurface();
         }
