@@ -13,7 +13,7 @@
       PositionOut="Center"
       ScaleIn="1.2"
       ScaleOut="0.8"
-      DurationIn="400"  
+      DurationIn="400"    
       DurationOut="300"
       EasingIn="SinOut"
       EasingOut="SinIn"
@@ -47,7 +47,7 @@
                                         <ViewCell>
                                             <SwipeView>
                                                 <SwipeView.RightItems>
-                                                    <SwipeItem Text="Delete"
+                                                    <SwipeItem Text="Delete" 
                                     BackgroundColor="Red"
                                     Invoked="Del" />
                                                 </SwipeView.RightItems>

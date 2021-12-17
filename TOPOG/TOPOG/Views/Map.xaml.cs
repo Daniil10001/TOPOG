@@ -109,7 +109,7 @@ namespace TOPOG.Views
             else SrtT.Text = "По пикетам";
             if (sm!=null)
             up();
-        }
+        } 
 
         private async void Splei(object sender, EventArgs e)
         {
@@ -117,7 +117,7 @@ namespace TOPOG.Views
             SwipeItem sw = ((SwipeItem)sender);
             Predst pr = (Predst)sw.BindingContext;
             App.Current.Properties["IC"] = false;
-            await Navigation.PushPopupAsync(new SplView(pr.to));
+            await Navigation.PushPopupAsync(new SplView(pr.ot));
             while (!(bool)App.Current.Properties["IC"]) await Task.Delay(100);
             sm = (Semka)App.Current.Properties["Semka"];
 

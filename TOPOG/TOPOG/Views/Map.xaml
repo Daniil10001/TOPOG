@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:skia="clr-namespace:SkiaSharp.Views.Forms;assembly=SkiaSharp.Views.Forms"
              xmlns:tt1="clr-namespace:TouchTracking.Forms;assembly=TouchTracking.Forms"
-             x:Class="TOPOG.Views.Map" Title="Semka">
+             x:Class="TOPOG.Views.Map" Title="Съемка">
     <ContentPage.Content>
         <StackLayout PropertyChanged="PropertyChanged">
             <StackLayout Orientation="Horizontal">
@@ -11,7 +11,7 @@
                 <Entry Placeholder="Начальный пикет" x:Name="NachP" Completed="TextChanged" WidthRequest="50"/>
                 <Switch x:Name="Srt" Toggled="Srt_Toggled" IsToggled="True"/>
                 <Label x:Name="SrtT" FontSize="Medium" VerticalOptions="Center"/>
-            </StackLayout>
+            </StackLayout> 
             <Label Text="" x:Name="Prn"></Label>
             <!--<Button Clicked="Button_Clicked"></Button>-->
             <ScrollView>

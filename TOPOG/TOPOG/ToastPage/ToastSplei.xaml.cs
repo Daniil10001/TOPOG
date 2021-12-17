@@ -1,6 +1,6 @@
 ﻿using Android.Widget;
 using Rg.Plugins.Popup.Extensions;
-using Rg.Plugins.Popup.Pages; 
+using Rg.Plugins.Popup.Pages;  
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -105,7 +105,7 @@ namespace TOPOG.ToastPage
                 return;
             }
             str = str.Replace(" ","");
-            Toast.MakeText(Android.App.Application.Context, "dlsl;sff", ToastLength.Long).Show();
+            //Toast.MakeText(Android.App.Application.Context, "dlsl;sff", ToastLength.Long).Show();
             Semka sm = (Semka)App.Current.Properties["Semka"];
             if (sm != null)
             {
