@@ -179,12 +179,13 @@ namespace TOPOG.Views
                             if (point.X < mnx) mnx = point.X;
                             if (point.Y > mxy) mxy = point.Y;
                             if (point.Y < mny) mny = point.Y;
-                        } 
-                float mx=2*Math.Max(Math.Max(Math.Abs(mxx), Math.Abs(mnx)), Math.Max(Math.Abs(mxx), Math.Abs(mnx)));
-                Toast.MakeText(Android.App.Application.Context, Math.Max(Math.Abs(mxx), Math.Abs(mnx)).ToString(), ToastLength.Short).Show();
+                        }
+                float parx=mxx-mnx, pary=mxy-mny,srx=(mxx+mnx)/2, sry = (mxy + mny) / 2;
+                float mx=Math.Max(parx, pary); 
+                //Toast.MakeText(Android.App.Application.Context, Math.Max(Math.Abs(mxx), Math.Abs(mnx)).ToString(), ToastLength.Short).Show();
                 float scl = Math.Max(Math.Min(15, Math.Min(pW / (60+mx), 
-                    (pH - 10 - dy * (k + 4)) / (60+mx))), 0)/1.5f;// - 20 - dy * (k + 4)
-                //scl = 840 / (896.69f * 2);
+                    (pH - 10 - dy * (k + 4)) / (60+mx))), 0)/1f;// - 20 - dy * (k + 4)
+                //scl = 840 / (896.69f * 2);  
                 Toast.MakeText(Android.App.Application.Context, scl.ToString(), ToastLength.Long).Show();
                 SKPaint PTxt = new SKPaint() { Color = SKColors.Black, TextSize = h };
                 using (var pdfCanvas = document.BeginPage(pW, pH))
@@ -233,7 +234,7 @@ namespace TOPOG.Views
                         for (int i = 0; i < Paths[pt].Count; i++)
                         {
                             SKPath pth = new SKPath(Paths[pt][i]);
-                            pth.Transform(SKMatrix.CreateTranslation(pW/2/scl,(pH - 10 - dy * (k + 4)) /2/scl));//-10-dy*(k+4)
+                            pth.Transform(SKMatrix.CreateTranslation(pW/2/scl-srx,(pH - 10 - dy * (k + 4) ) /2/scl-sry));//-10-dy*(k+4)
                             //pth.Transform(SKMatrix.CreateScale(scl, scl));
                             pdfCanvas.DrawPath(pth,paintT);
                         }
