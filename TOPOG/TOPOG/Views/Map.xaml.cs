@@ -162,7 +162,7 @@ namespace TOPOG.Views
             if (File.Exists(pathd))
                 File.Delete(pathd);
             using (SKDocument document = SKDocument.CreatePdf(pathd, metadata))
-            {
+            { 
                 float pW = 840;
                 float pH = 1188;
                 SKPaint paint = new SKPaint() { Color = SKColors.Black, StrokeWidth = 1, Style = SKPaintStyle.Stroke };
@@ -172,7 +172,6 @@ namespace TOPOG.Views
                 float mny = float.MaxValue, mxy = -float.MaxValue, mnx = float.MaxValue, mxx = -float.MaxValue;
                 foreach (SKPaint pt in Paths.Keys)
                     foreach (SKPath pth in Paths[pt])
-                    {
                         //Toast.MakeText(Android.App.Application.Context, Math.Max(Math.Abs(mxx), Math.Abs(mnx)).ToString(), ToastLength.Short).Show();
                         foreach (SKPoint point in pth.Points)
                         {
@@ -180,12 +179,11 @@ namespace TOPOG.Views
                             if (point.X < mnx) mnx = point.X;
                             if (point.Y > mxy) mxy = point.Y;
                             if (point.Y < mny) mny = point.Y;
-                        }
-                    }
+                        } 
                 float mx=2*Math.Max(Math.Max(Math.Abs(mxx), Math.Abs(mnx)), Math.Max(Math.Abs(mxx), Math.Abs(mnx)));
                 Toast.MakeText(Android.App.Application.Context, Math.Max(Math.Abs(mxx), Math.Abs(mnx)).ToString(), ToastLength.Short).Show();
                 float scl = Math.Max(Math.Min(15, Math.Min(pW / (60+mx), 
-                    (pH ) / (60+mx))), 0);//- 20 - dy * (k + 4)- 20 - dy * (k + 4)
+                    (pH - 10 - dy * (k + 4)) / (60+mx))), 0)/1.5f;// - 20 - dy * (k + 4)
                 //scl = 840 / (896.69f * 2);
                 Toast.MakeText(Android.App.Application.Context, scl.ToString(), ToastLength.Long).Show();
                 SKPaint PTxt = new SKPaint() { Color = SKColors.Black, TextSize = h };
@@ -235,7 +233,7 @@ namespace TOPOG.Views
                         for (int i = 0; i < Paths[pt].Count; i++)
                         {
                             SKPath pth = new SKPath(Paths[pt][i]);
-                            pth.Transform(SKMatrix.CreateTranslation(pW/2/scl,(pH)/2/scl));//-10-dy*(k+4)
+                            pth.Transform(SKMatrix.CreateTranslation(pW/2/scl,(pH - 10 - dy * (k + 4)) /2/scl));//-10-dy*(k+4)
                             //pth.Transform(SKMatrix.CreateScale(scl, scl));
                             pdfCanvas.DrawPath(pth,paintT);
                         }
