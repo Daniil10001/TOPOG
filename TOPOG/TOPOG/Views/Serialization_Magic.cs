@@ -25,7 +25,6 @@ namespace TOPOG.Views
             public List<List<string>> ShapeI = new List<List<string>>();
             public static abri get(abris a1)
             {
-
                 abri a = new abri(a1.name);
                 for (int i = 0; i < a1.PathsK.Count; i++)
                 {
