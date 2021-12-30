@@ -140,7 +140,7 @@ namespace TOPOG.Views
             Paths = new Dictionary<SKPaint, List<SKPath>>();
             Point = new Dictionary<SKPaint, List<SKPoint>>();
             Shape = new Dictionary<Tuple<SKPaint, SKPaint>, List<SKPath>>();
-        } 
+        }
         public abri(string name, Dictionary<SKPaint, List<SKPath>> a,Dictionary<SKPaint, List<SKPoint>> b,Dictionary<Tuple<SKPaint, SKPaint>, List<SKPath>>c) 
         {
             name = "";
