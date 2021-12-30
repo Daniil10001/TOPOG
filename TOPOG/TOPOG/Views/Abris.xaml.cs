@@ -14,7 +14,7 @@ using static TOPOG.Views.Serialization_Magic;
 namespace TOPOG.Views
 {
     public partial class Abris : ContentPage
-    { 
+    {
         float dx = 0, dy = 0, scl = 1;
         SKPath nitka = new SKPath();
         List<Tuple<SKPoint, string>> picts = new List<Tuple<SKPoint, string>>();
