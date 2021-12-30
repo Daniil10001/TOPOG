@@ -14,7 +14,7 @@ namespace TOPOG.Views
         public CaveSettings()
         { 
             InitializeComponent(); 
-        } 
+        }
 
         private void StackLayout_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
