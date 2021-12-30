@@ -11,7 +11,7 @@ namespace TOPOG.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class Paint : ContentPage
-    {
+    { 
         public Paint()
         { 
             InitializeComponent();
