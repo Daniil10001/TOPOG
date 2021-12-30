@@ -15,7 +15,7 @@ using Xamarin.Forms.Xaml;
 namespace TOPOG.ToastPage
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class Vibor : PopupPage 
+    public partial class Vibor : PopupPage
     {
         public List<Tuple<string,string>> lst { get; set; }
         public Vibor()
