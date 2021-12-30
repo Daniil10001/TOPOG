@@ -13,7 +13,7 @@ namespace TOPOG.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class Map : ContentPage
-    { 
+    {
         public List<Predst> prd { get; set; }
         public string nach { get; set; } 
         public Semka sm { get; set; }
