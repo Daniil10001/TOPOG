@@ -15,7 +15,7 @@ namespace TOPOG.Views
         public string path = Serial.path;
         public bool b = false; 
         public Mn()
-        { 
+        {
             InitializeComponent(); 
             if (!File.Exists(path)) 
             {  
