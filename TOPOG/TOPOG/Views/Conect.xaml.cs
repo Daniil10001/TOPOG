@@ -17,7 +17,7 @@ namespace TOPOG.Views
 {
     //[XamlCompilation(XamlCompilationOptions.Compile)]
     public class Devi 
-    {
+    { 
         public string Addres { get; set; }
         public string Name { get; set; }
         public BluetoothDevice bt { get; set; }

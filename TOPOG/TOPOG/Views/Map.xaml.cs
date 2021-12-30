@@ -13,7 +13,7 @@ namespace TOPOG.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class Map : ContentPage
-    {
+    { 
         public List<Predst> prd { get; set; }
         public string nach { get; set; } 
         public Semka sm { get; set; }
@@ -181,10 +181,10 @@ namespace TOPOG.Views
                             if (point.Y < mny) mny = point.Y;
                         }
                 float parx=mxx-mnx, pary=mxy-mny,srx=(mxx+mnx)/2, sry = (mxy + mny) / 2;
-                float mx=Math.Max(parx, pary); 
+                float mx=Math.Max(parx, pary);
                 //Toast.MakeText(Android.App.Application.Context, Math.Max(Math.Abs(mxx), Math.Abs(mnx)).ToString(), ToastLength.Short).Show();
                 float scl = Math.Max(Math.Min(15, Math.Min(pW / (60+mx), 
-                    (pH - 10 - dy * (k + 4)) / (60+mx))), 0)/1f;// - 20 - dy * (k + 4)
+                    (pH - 10 - dy * (k + 4)) / (60+mx))), 0);// - 20 - dy * (k + 4)
                 //scl = 840 / (896.69f * 2);  
                 Toast.MakeText(Android.App.Application.Context, scl.ToString(), ToastLength.Long).Show();
                 SKPaint PTxt = new SKPaint() { Color = SKColors.Black, TextSize = h };

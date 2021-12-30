@@ -1,36 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using SQLite;
-using Newtonsoft.Json;
 using System.IO;
 using Android.Widget;
-using Android.Content;
 
 namespace TOPOG.Views
-{
+{ 
 
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class Mn : ContentPage
-    {
+    {  
         public List<Cave> CavesA { get; set; }
-        public string path = Android.App.Application.Context.GetExternalFilesDir("").ToString() + "/Saved Caves.cv";
-        public bool b = false;
+        public string path = Serial.path;
+        public bool b = false; 
         public Mn()
-        {
+        { 
             InitializeComponent(); 
-            if (!File.Exists(path))
-            {
-                //Create a file to write 
-                string createText = JsonConvert.SerializeObject(new List<Cave>() { });
-                //Toast.MakeText(Android.App.Application.Context, createText, ToastLength.Short).Show();
-                File.WriteAllText(path, createText);
-            }
-            CavesA = JsonConvert.DeserializeObject<List<Cave>>(File.ReadAllText(path));
+            if (!File.Exists(path)) 
+            {  
+                //Create a file to write  
+                /*string createText = JsonConvert.SerializeObject(new List<Cave>() { });
+                
+                File.WriteAllText(path, createText);*/
+                //Toast.MakeText(Android.App.Application.Context, "1", ToastLength.Short).Show();
+                Serial.Save(new List<Cave>() { }, typeof(List<Cave>), path);
+                //Toast.MakeText(Android.App.Application.Context, "2", ToastLength.Short).Show();
+            } 
+            CavesA = (List<Cave>)Serial.Open(typeof(List<Cave>), path);//JsonConvert.DeserializeObject<List<Cave>>(File.ReadAllText(path));
             //Environment.SpecialFolder.LocalApplicationData
             this.BindingContext = this;
             b = true;
@@ -39,7 +36,7 @@ namespace TOPOG.Views
         {
             Caves.IsRefreshing = true;
             Caves.ItemsSource = null;
-            CavesA = JsonConvert.DeserializeObject<List<Cave>>(File.ReadAllText(path));
+            CavesA = (List<Cave>)Serial.Open(typeof(List<Cave>), path);//JsonConvert.DeserializeObject<List<Cave>>(File.ReadAllText(path));
             //Environment.SpecialFolder.LocalApplicationData
             Caves.ItemsSource = CavesA;
             this.BindingContext = this;
@@ -54,8 +51,9 @@ namespace TOPOG.Views
            
             App.Current.Properties["Cave"]=c;
             Pt.Text = "Статус:Обработка";
-            Semka s = JsonConvert.DeserializeObject<Semka>(File.ReadAllText(c.PathA));
+            Semka s = (Semka)Serial.Open(typeof(Semka), c.PathA);//JsonConvert.DeserializeObject<Semka>(File.ReadAllText());
             App.Current.Properties["Semka"] = s;
+            App.Current.Properties["Nm"] = "";
             Pt.Text = "Статус:ОК";
             
             await Shell.Current.GoToAsync("//Map");
@@ -65,7 +63,7 @@ namespace TOPOG.Views
             //await Shell.Current.GoToAsync("//CaveSettings");
             SwipeItem sw = ((SwipeItem)sender);
             Cave cv = (Cave)sw.BindingContext;
-            List<Cave> ls = JsonConvert.DeserializeObject<List<Cave>>(File.ReadAllText(path));
+            List<Cave> ls = (List<Cave>)Serial.Open(typeof(List<Cave>), path);// JsonConvert.DeserializeObject<List<Cave>>(File.ReadAllText(path));
             int i = 0,ans=0;
             foreach (Cave ca in ls)
             {
@@ -75,13 +73,23 @@ namespace TOPOG.Views
                 }
                 i++;
             }
+            Semka sm = ((Semka)Serial.Open(typeof(Semka), cv.PathA));
+            foreach (Tuple<string,string> st in sm.abrisy)
+            {
+                if (File.Exists(Android.App.Application.Context.GetExternalFilesDir("").ToString() + "/" + sm.Name + @"\\" + st.Item1 + ".abr"))
+                    File.Delete(Android.App.Application.Context.GetExternalFilesDir("").ToString() + "/" + sm.Name + @"\\" + st.Item1 + ".abr");
+                if (File.Exists(Android.App.Application.Context.GetExternalFilesDir("").ToString() + "/" + sm.Name + @"\\" + st.Item2 + ".abr"))
+                    File.Delete(Android.App.Application.Context.GetExternalFilesDir("").ToString() + "/" + sm.Name + @"\\" + st.Item2 + ".abr");
+            }
             ls.RemoveAt(ans);
             File.Delete(cv.PathA);
-            string createText = JsonConvert.SerializeObject(ls);
-            File.WriteAllText(path, createText);
+            /*string createText = JsonConvert.SerializeObject(ls);
+            File.WriteAllText(path, createText); */
+            Serial.Save(ls, typeof(List<Cave>), path);
             update();
             //Toast.MakeText(Android.App.Application.Context, ls.Contains(cv).ToString(), ToastLength.Short).Show();
         }
+
         public async void Nw(object sender, EventArgs e)
         {
             Cave c = new Cave();

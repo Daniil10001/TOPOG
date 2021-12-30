@@ -13,7 +13,7 @@ namespace TOPOG.Views
     public partial class Paint : ContentPage
     {
         public Paint()
-        {
+        { 
             InitializeComponent();
         }
     }

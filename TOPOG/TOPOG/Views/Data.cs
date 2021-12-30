@@ -13,6 +13,7 @@ namespace TOPOG.Views
 
     public class Serial
     {
+        static public string path = Android.App.Application.Context.GetExternalFilesDir("").ToString() + "/Saved Caves.cvs";
         public static void Save(object obj,Type T,string path)
         {
             try
@@ -33,6 +34,10 @@ namespace TOPOG.Views
                 Toast.MakeText(Android.App.Application.Context, ex.ToString(), ToastLength.Long).Show();
                 File.WriteAllText(path+".txt", ex.ToString());
             }
+        }
+        public static string ptha(string Name)
+        {
+            return Android.App.Application.Context.GetExternalFilesDir("").ToString() + "/" + ((Semka)App.Current.Properties["Semka"]).Name + @"\\" + Name + ".abr";
         }
         public static object Open(Type T,string path)
         {
@@ -60,18 +65,18 @@ namespace TOPOG.Views
         public Cave()
         {
             Name = "";
-            Locat = "";
+            Athours = "";
             Description = "";
         }
         public Cave(string a,string b,string c)
         {
             Name = a;
-            Locat = b;
+            Athours = b;
             Description = c;
         }
         public string Description { get; set; }
         public string Name { get; set; } 
-        public string Locat { get; set; }
+        public string Athours { get; set; }
         public string PathA
         {
             get {
@@ -93,7 +98,7 @@ namespace TOPOG.Views
         {
             x = xn;
             y = yn;
-            x = xn;
+            z = zn;
         }
         public double x { get; set; }
         public double y { get; set; }
@@ -106,7 +111,7 @@ namespace TOPOG.Views
         {
             x = xn;
             y = yn;
-            x = xn;
+            z = zn;
             orient = b;
         }
         public double x { get; set; }
@@ -135,7 +140,7 @@ namespace TOPOG.Views
             Paths = new Dictionary<SKPaint, List<SKPath>>();
             Point = new Dictionary<SKPaint, List<SKPoint>>();
             Shape = new Dictionary<Tuple<SKPaint, SKPaint>, List<SKPath>>();
-        }
+        } 
         public abri(string name, Dictionary<SKPaint, List<SKPath>> a,Dictionary<SKPaint, List<SKPoint>> b,Dictionary<Tuple<SKPaint, SKPaint>, List<SKPath>>c) 
         {
             name = "";
@@ -150,10 +155,10 @@ namespace TOPOG.Views
         public Dictionary<SKPaint, List<SKPoint>> Point = new Dictionary<SKPaint, List<SKPoint>>();
 
         public Dictionary<Tuple<SKPaint, SKPaint>, List<SKPath>> Shape = new Dictionary<Tuple<SKPaint, SKPaint>, List<SKPath>>();
-        public static abri getabr(string pth)
+        public static abri getabr(string name)  
         {
-            return abris.get((abris)Serial.Open(typeof(abris),pth));
-            //return JsonConvert.DeserializeObject<abri>(File.ReadAllText(pth));
+            return abris.get((abris)Serial.Open(typeof(abris),Serial.ptha(name)));
+            //return JsonConvert.DeserializeObject<abri>(File.ReadAllText(pth)); cd
         }
     }
     public class Semka
@@ -162,7 +167,7 @@ namespace TOPOG.Views
         {
             Name = "";
             Description = "";
-            Mest = "";
+            Athours = "";
             nach = "";
             splei = new Dictionary<string, Spley>();
             pereh = new Dictionary<string, HashSet<string>>();
@@ -173,7 +178,7 @@ namespace TOPOG.Views
         {
             Name = a;
             Description = b;
-            Mest = c;
+            Athours = c;
             nach = d;
             splei = e;
             pereh = f;
@@ -182,7 +187,7 @@ namespace TOPOG.Views
         }
         public string Name { get; set; }
         public string Description { get; set; }
-        public string Mest { get; set; }
+        public string Athours { get; set; }
         public string nach { get; set; }
         public Dictionary<string, Spley> splei { get; set; }
         public Dictionary<string, HashSet<string>> pereh { get; set; }
@@ -241,15 +246,45 @@ namespace TOPOG.Views
             Postr ps = new Postr();
             ps.nm = nach;
             isp[nach] = true;
+            if (!smk.pereh.ContainsKey(nach)) return ps;
             foreach (string sl in smk.pereh[nach])
             {
                 var vr = smk.sdvig[nach+ "!@TOPOG@!" + sl];
                 Izm izm = new Izm(vr.x, vr.y, vr.z);
-                if (isp.ContainsKey(sl) || !smk.pereh.ContainsKey(sl)) ps.berh[sl] = new Tuple<Izm,Postr>(izm,null);
+                if (isp.ContainsKey(sl)) ps.berh[sl] = new Tuple<Izm,Postr>(izm,null);
                 else ps.berh[sl]=new Tuple<Izm, Postr>(izm,dfs(sl));
                 //if (!smk.sdvig.ContainsKey(new Tuple<string, string>(sl, nach)))
             }
             return ps;
+        }
+        static public void BuildPathH(Postr pstr, ref SKPath pth, ref List<Tuple<SKPoint,string>> picts, ref bool b)
+        {
+            if (pstr == null)
+                return;
+            float kf = 50;
+            SKPoint pnt = pth.LastPoint;
+            picts.Add(new Tuple<SKPoint, string>(pnt, pstr.nm));
+            foreach(string k in pstr.berh.Keys)
+            {
+                pth.MoveTo(pnt);
+                if (b)
+                    pth.RLineTo(-(float)pstr.berh[k].Item1.x * kf, -(float)pstr.berh[k].Item1.y * kf);
+                else
+                    pth.RLineTo(-(float)pstr.berh[k].Item1.z * kf, -(float)pstr.berh[k].Item1.y * kf);
+                BuildPathH(pstr.berh[k].Item2,ref pth,ref picts,ref b);
+            }
+            if (((Semka)App.Current.Properties["Semka"]).splei.ContainsKey(pstr.nm))
+            foreach (Ez exi in ((Semka)App.Current.Properties["Semka"]).splei[pstr.nm].spl)
+            {
+                if (exi.orient == b)
+                {
+                    pth.MoveTo(pnt);
+                    if (b==false)
+                        pth.RLineTo(-(float)exi.x * kf, -(float)exi.y * kf);
+                    else
+                        pth.RLineTo(-(float)exi.z * kf, -(float)exi.y * kf);
+                }
+            }
         }
         static public List<Predst> obratn(Postr ps,int i=0)
         {

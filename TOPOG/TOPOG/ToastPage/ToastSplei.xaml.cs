@@ -14,7 +14,7 @@ using Xamarin.Forms.Xaml;
 namespace TOPOG.ToastPage
 { 
     public class BoolToObjectConverter<T> : IValueConverter
-    {
+    { 
         public T TrueObject { set; get; }
 
         public T FalseObject { set; get; }

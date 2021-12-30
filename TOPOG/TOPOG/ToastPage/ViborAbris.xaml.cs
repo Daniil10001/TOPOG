@@ -5,7 +5,7 @@ using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text; 
+using System.Text;  
 using System.Threading.Tasks;
 using TOPOG.Views;
 using TouchTracking;
@@ -15,7 +15,7 @@ using Xamarin.Forms.Xaml;
 namespace TOPOG.ToastPage
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class Vibor : PopupPage
+    public partial class Vibor : PopupPage 
     {
         public List<Tuple<string,string>> lst { get; set; }
         public Vibor()
@@ -54,12 +54,23 @@ namespace TOPOG.ToastPage
             string pr = (string)sw.Text;
             //Toast.MakeText(Android.App.Application.Context, pr, ToastLength.Short).Show();
             App.Current.Properties["Nm"] = pr;
-            await Navigation.PopPopupAsync();
+            App.Current.Properties["Poloj"] = true;
+            App.Current.Properties["IC"] = true;
+            await Navigation.PopAllPopupAsync();
         }
-
+        private async void Button_Clicked1(object sender, EventArgs e)
+        {
+            Xamarin.Forms.Button sw = ((Xamarin.Forms.Button)sender);
+            string pr = (string)sw.Text;
+            //Toast.MakeText(Android.App.Application.Context, pr, ToastLength.Short).Show();
+            App.Current.Properties["Nm"] = pr;
+            App.Current.Properties["Poloj"] = false;
+            App.Current.Properties["IC"] = true;
+            await Navigation.PopAllPopupAsync();
+        }
         private void Button_Clicked_1(object sender, EventArgs e)
         {
-            if (fst.Text!="" || scd.Text!="")
+            if (fst.Text!="" && scd.Text!="" && scd.Text!=fst.Text)
             {
                 ((Semka)App.Current.Properties["Semka"]).abrisy.Add(new Tuple<string, string>(fst.Text, scd.Text));
                 ls.ItemsSource = null;

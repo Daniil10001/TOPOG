@@ -5,13 +5,13 @@ using System;
 using System.Threading.Tasks;
 using TOPOG.Views;
 using Xamarin.Forms;
- 
+  
 namespace TOPOG.ToastPage
 {
     public partial class ToastPicet : PopupPage
     {
         private int k { get; set; } 
-        public ToastPicet(Predst pr)
+        public ToastPicet(Predst pr) 
         {
             InitializeComponent();
             xo.Text = pr.x.ToString();
