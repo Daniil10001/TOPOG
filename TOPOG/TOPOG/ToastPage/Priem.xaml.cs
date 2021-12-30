@@ -10,7 +10,7 @@ using TouchTracking;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace TOPOG.ToastPage 
+namespace TOPOG.ToastPage
 { 
     [XamlCompilation(XamlCompilationOptions.Compile)] 
     public partial class Priem : PopupPage
