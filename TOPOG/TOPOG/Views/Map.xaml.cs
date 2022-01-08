@@ -179,12 +179,12 @@ namespace TOPOG.Views
                             if (point.X < mnx) mnx = point.X;
                             if (point.Y > mxy) mxy = point.Y;
                             if (point.Y < mny) mny = point.Y;
-                        }
+                        } 
                 float parx=mxx-mnx, pary=mxy-mny,srx=(mxx+mnx)/2, sry = (mxy + mny) / 2;
                 float mx=Math.Max(parx, pary);
                 //Toast.MakeText(Android.App.Application.Context, Math.Max(Math.Abs(mxx), Math.Abs(mnx)).ToString(), ToastLength.Short).Show();
-                float scl = Math.Max(Math.Min(15, Math.Min(pW / (60+mx), 
-                    (pH - 10 - dy * (k + 4)) / (60+mx))), 0);// - 20 - dy * (k + 4)
+                float scl = Math.Max(Math.Min(15, Math.Min(pW / (30+mx), 
+                    (pH - 10 - dy * (k + 4)) / (30+mx))), 0);// - 20 - dy * (k + 4)
                 //scl = 840 / (896.69f * 2);  
                 Toast.MakeText(Android.App.Application.Context, scl.ToString(), ToastLength.Long).Show();
                 SKPaint PTxt = new SKPaint() { Color = SKColors.Black, TextSize = h };
@@ -251,13 +251,13 @@ namespace TOPOG.Views
 
                 Dictionary<SKPaint, List<SKPath>> PathsH = new Dictionary<SKPaint, List<SKPath>>();
                 Dictionary<SKPaint, List<SKPath>> PathsV = new Dictionary<SKPaint, List<SKPath>>();
-                foreach (Tuple<string,string> abrises in sm.abrisy)
+                foreach (Tuple<string,string> abrises in sm.abrisy) 
                 {
                     abri aH = new abri(abrises.Item1);
-                    if (File.Exists(Serial.ptha(abrises.Item1)))
+                    if (File.Exists(Serial.ptha(sm.Name,abrises.Item1)))
                         aH = abri.getabr(abrises.Item1);
                     abri aV = new abri(abrises.Item2);
-                    if (File.Exists(Serial.ptha(abrises.Item2)))
+                    if (File.Exists(Serial.ptha(sm.Name,abrises.Item2)))
                         aV = abri.getabr(abrises.Item2);
                     foreach (SKPaint pt in aH.Paths.Keys)
                     {

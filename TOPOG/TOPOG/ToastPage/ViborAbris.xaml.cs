@@ -72,6 +72,13 @@ namespace TOPOG.ToastPage
         {
             if (fst.Text!="" && scd.Text!="" && scd.Text!=fst.Text)
             {
+                bool b=false;
+                foreach (Tuple<string, string> abrises in ((Semka)App.Current.Properties["Semka"]).abrisy)
+                {
+                    if (abrises.Item1.ToLower() == fst.Text.ToLower() || abrises.Item1.ToLower() == scd.Text.ToLower() 
+                        || abrises.Item2.ToLower() == fst.Text.ToLower() || abrises.Item2.ToLower() == scd.Text.ToLower()) b = true;
+                }
+                if (b) return;
                 ((Semka)App.Current.Properties["Semka"]).abrisy.Add(new Tuple<string, string>(fst.Text, scd.Text));
                 ls.ItemsSource = null;
                 lst = ((Semka)App.Current.Properties["Semka"]).abrisy;
@@ -80,4 +87,4 @@ namespace TOPOG.ToastPage
             }
         }
     }
-}
+} 
