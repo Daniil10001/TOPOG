@@ -35,9 +35,9 @@ namespace TOPOG.Views
                 File.WriteAllText(path+".txt", ex.ToString());
             }
         }
-        public static string ptha(string Name)
+        public static string ptha(string nz,string Name)
         {
-            return Android.App.Application.Context.GetExternalFilesDir("").ToString() + "/" + ((Semka)App.Current.Properties["Semka"]).Name + @"\\" + Name + ".abr";
+            return Android.App.Application.Context.GetExternalFilesDir("").ToString() + "/" + nz + @"\\" + Name + ".abr";
         }
         public static object Open(Type T,string path)
         {
@@ -137,27 +137,27 @@ namespace TOPOG.Views
         public abri(string name)
         {
             name = "";
-            Paths = new Dictionary<SKPaint, List<SKPath>>();
+            Paths = new Dictionary<CPaintL, List<SKPath>>();
             Point = new Dictionary<SKPaint, List<SKPoint>>();
             Shape = new Dictionary<Tuple<SKPaint, SKPaint>, List<SKPath>>();
         }
-        public abri(string name, Dictionary<SKPaint, List<SKPath>> a,Dictionary<SKPaint, List<SKPoint>> b,Dictionary<Tuple<SKPaint, SKPaint>, List<SKPath>>c) 
+        public abri(string name, Dictionary<CPaintL, List<SKPath>> a,Dictionary<SKPaint, List<SKPoint>> b,Dictionary<Tuple<SKPaint, SKPaint>, List<SKPath>>c) 
         {
             name = "";
             Paths = a;
             Point = b;
             Shape = c;
         }
-        public string name { get; set; }
+        public string name { get; set; } 
 
-        public Dictionary<SKPaint, List<SKPath>> Paths = new Dictionary<SKPaint, List<SKPath>>();
+        public Dictionary<CPaintL, List<SKPath>> Paths = new Dictionary<CPaintL, List<SKPath>>();
 
         public Dictionary<SKPaint, List<SKPoint>> Point = new Dictionary<SKPaint, List<SKPoint>>();
 
         public Dictionary<Tuple<SKPaint, SKPaint>, List<SKPath>> Shape = new Dictionary<Tuple<SKPaint, SKPaint>, List<SKPath>>();
         public static abri getabr(string name)  
         {
-            return abris.get((abris)Serial.Open(typeof(abris),Serial.ptha(name)));
+            return abris.get((abris)Serial.Open(typeof(abris),Serial.ptha(((Semka)App.Current.Properties["Semka"]).Name,name)));
             //return JsonConvert.DeserializeObject<abri>(File.ReadAllText(pth)); cd
         }
     }

@@ -11,7 +11,7 @@
                 <Entry Placeholder="Начальный пикет" x:Name="NachP" Completed="TextChanged" WidthRequest="50"/>
                 <Switch x:Name="Srt" Toggled="Srt_Toggled" IsToggled="True"/>
                 <Label x:Name="SrtT" FontSize="Medium" VerticalOptions="Center"/>
-            </StackLayout> 
+            </StackLayout>
             <Label Text="" x:Name="Prn"></Label>
             <!--<Button Clicked="Button_Clicked"></Button>-->
             <ScrollView>
@@ -31,7 +31,7 @@
                                     <StackLayout Orientation="Horizontal" Padding="5,0,0,0" Background="White">
                                         <Label  FontSize="19.2" Text="{Binding otstup, StringFormat='{0}'}"/>
                                         <Label  FontSize="19.2" Text="{Binding ot, StringFormat='{0}'}" HorizontalTextAlignment="Start"/>
-                                        <Label  Text="->" FontSize="19.2"/>
+                                        <Label  Text="->" FontSize="19.2"/> 
                                         <Label  FontSize="19.2" Text="{Binding to, StringFormat='{0}  '}" HorizontalTextAlignment="Center"/>
                                         <Label  Text="{Binding x, StringFormat='{0}'}" FontSize="19.2" HorizontalTextAlignment="Center" />
                                         <Label  Text="{Binding y, StringFormat='{0}'}" FontSize="19.2" HorizontalTextAlignment="Center" />
@@ -39,7 +39,7 @@
                                     </StackLayout>
                                 </SwipeView>
                             </ViewCell>
-                        </DataTemplate>
+                        </DataTemplate>   
                     </ListView.ItemTemplate>
                 </ListView>
             </ScrollView>

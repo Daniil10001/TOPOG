@@ -21,12 +21,13 @@ namespace TOPOG.Views
         public Abris()
         {
             InitializeComponent();
+            typel.SelectedIndex = 0;
         }
         SKPaint paintS = new SKPaint
         {
             Style = SKPaintStyle.Stroke,
             Color = SKColors.White,
-            StrokeWidth = 1,
+            StrokeWidth = 2,
             StrokeCap = SKStrokeCap.Square,
             StrokeJoin = SKStrokeJoin.Round
         };
@@ -36,14 +37,14 @@ namespace TOPOG.Views
             Color = SKColors.Pink,
             StrokeWidth = 1
         };
-        SKPaint paint = new SKPaint
+        /*SKPaint paint = new SKPaint
         {
             Style = SKPaintStyle.Stroke,
             Color = SKColors.Red,
-            StrokeWidth = 1,
+            StrokeWidth = 2,
             StrokeCap = SKStrokeCap.Square,
             StrokeJoin = SKStrokeJoin.Round
-        };
+        }*/
         SKPaint paint2 = new SKPaint
         {
             Style = SKPaintStyle.Fill,
@@ -52,30 +53,44 @@ namespace TOPOG.Views
         };
         private void canvasView_PaintSurface(object sender, SkiaSharp.Views.Forms.SKPaintSurfaceEventArgs args)
         {
-            nm.Text = "Название: "+Name+" Приближение:"+(Math.Round(scl,2)).ToString();
+            
             try
             {
                 SKCanvas canvas = args.Surface.Canvas;
                 canvas.Clear();
-                SKCanvas c;
+                //SKCanvas c;
+                //SKPaint paintC = new SKPaint() { Color = SKColors.White, StrokeWidth=1 };
+                //SKPath rc = new SKPath() { }
+                //rc.AddRect(SKRect.Create(50,50));
+                float sh = 50*Math.Max(1,2*(int)(1/scl/2));
+                nm.Text = "Название: " + Name + " Приближение:" + (Math.Round(scl, 2)).ToString() + " Клетка: "+((int)(sh/50)).ToString()+"м";
+                SKPathEffect ef = 
+                   SKPathEffect.CreateSum(SKPathEffect.Create2DLine(1, SKMatrix.CreateScaleTranslation(1,sh*scl,0,(dy+sh/2)*scl)),
+                   SKPathEffect.Create2DLine(1, SKMatrix.Concat(SKMatrix.CreateScaleTranslation(sh*scl, 1,(dx+sh/2)*scl,0), SKMatrix.CreateRotationDegrees(90))));//SKPathEffect.Create2DPath(SKMatrix.CreateScaleTranslation(50,50,50,50),paintC.GetFillPath(rc));
+                canvas.DrawRect(0,0,canvasView.CanvasSize.Width,canvasView.CanvasSize.Height,
+                    new SKPaint() {Style=SKPaintStyle.Fill, Color = SKColors.White, StrokeWidth = 1, PathEffect = ef });
                 canvas.Scale(scl);
-                
                 if (count <= 1 && type != -1)
                 {
                     foreach (SKPath path in inProgressPaths.Values)
                     {
+                        
                         SKPath p = new SKPath(path);
                         p.Transform(SKMatrix.CreateTranslation(dx,dy));
-                        canvas.DrawPath(p, paint);
+                        canvas.DrawPath(p, (((Tuple<int, CPaintL>)App.Current.Properties["Paint"]).Item2).getc());
+                        
                     }
                 }
-                foreach (SKPaint pn in completedPaths.Keys)
+                foreach (CPaintL pnf in completedPaths.Keys)
                 {
-                    foreach (SKPath pth in completedPaths[pn])
+                    SKPaint pn = pnf.getc();
+                    foreach (SKPath pth in completedPaths[pnf])
                     {
+                        pn.StrokeWidth = Math.Max(1, pn.StrokeWidth / scl);
                         SKPath p = new SKPath(pth);
                         p.Transform(SKMatrix.CreateTranslation(dx, dy));
-                        canvas.DrawPath(p, paint);
+                        canvas.DrawPath(p, pn);
+                        pn.StrokeWidth = 2;
                     }
                 }
                 foreach (Tuple<SKPaint, SKPaint> pn in completedShape.Keys)
@@ -94,6 +109,7 @@ namespace TOPOG.Views
                     }
                 }
                 SKPath pth2 = new SKPath(nitka);
+                paintS.StrokeWidth = Math.Max(1, paintS.StrokeWidth / scl);
                 pth2.Transform(SKMatrix.CreateTranslation(dx, dy));
                 canvas.DrawPath(pth2, paintS);
                 paintT.TextSize = 50 / scl;
@@ -102,7 +118,7 @@ namespace TOPOG.Views
                     paintT.MeasureText(pic.Item2);
                     canvas.DrawText(pic.Item2, new SKPoint(dx + pic.Item1.X+10/scl, dy + pic.Item1.Y-10/scl), paintT);
                 }
-
+                paintS.StrokeWidth = 2;
             }
             catch
             {
@@ -111,7 +127,8 @@ namespace TOPOG.Views
         }
         void upPth(int p = -1)
         {
-            List<SKPath> pth = completedPaths[paint];
+            CPaintL pnt = ((Tuple<int, CPaintL>)App.Current.Properties["Paint"]).Item2;
+            List<SKPath> pth = completedPaths[pnt];
             SKPath pt = pth[pth.Count() - 1];
             int k = 1000;
             if (p != -1)
@@ -125,35 +142,43 @@ namespace TOPOG.Views
                     SKPath pt1 = pth[i];
                     pt = pth[p];
                     if ((pt.LastPoint.X - pt1.GetPoint(0).X) * (pt.LastPoint.X - pt1.GetPoint(0).X) +
-                        (pt.LastPoint.Y - pt1.GetPoint(0).Y) * (pt.LastPoint.Y - pt1.GetPoint(0).Y) <= k)
+                        (pt.LastPoint.Y - pt1.GetPoint(0).Y) * (pt.LastPoint.Y - pt1.GetPoint(0).Y) <= k 
+                        && (pt.LastPoint.X - pt1.GetPoint(0).X) * (pt.LastPoint.X - pt1.GetPoint(0).X) +
+                        (pt.LastPoint.Y - pt1.GetPoint(0).Y) * (pt.LastPoint.Y - pt1.GetPoint(0).Y)>=0)
                     {
                         pth[p].LineTo(pt1.GetPoint(0));
-                        completedPaths[paint] = pth;
+                        completedPaths[pnt] = pth;
                     }
 
                     if ((pt.GetPoint(0).X - pt1.LastPoint.X) * (pt.GetPoint(0).X - pt1.LastPoint.X) +
-                        (pt.GetPoint(0).Y - pt1.LastPoint.Y) * (pt.GetPoint(0).Y - pt1.LastPoint.Y) <= k) //pt.GetPoint(0).X
+                        (pt.GetPoint(0).Y - pt1.LastPoint.Y) * (pt.GetPoint(0).Y - pt1.LastPoint.Y) <= k
+                        && (pt.GetPoint(0).X - pt1.LastPoint.X) * (pt.GetPoint(0).X - pt1.LastPoint.X) +
+                        (pt.GetPoint(0).Y - pt1.LastPoint.Y) * (pt.GetPoint(0).Y - pt1.LastPoint.Y) >=0)
                     {
                         //Toast.MakeText(Android.App.Application.Context, j.ToString(), ToastLength.Short).Show();
                         pth[i].LineTo(pt.GetPoint(0));
-                        completedPaths[paint] = pth;
+                        completedPaths[pnt] = pth;
                     }
 
                     if ((pt.LastPoint.X - pt1.LastPoint.X) * (pt.LastPoint.X - pt1.LastPoint.X) +
-                        (pt.LastPoint.Y - pt1.LastPoint.Y) * (pt.LastPoint.Y - pt1.LastPoint.Y) <= k)
+                        (pt.LastPoint.Y - pt1.LastPoint.Y) * (pt.LastPoint.Y - pt1.LastPoint.Y) <= k
+                        && (pt.LastPoint.X - pt1.LastPoint.X) * (pt.LastPoint.X - pt1.LastPoint.X) +
+                        (pt.LastPoint.Y - pt1.LastPoint.Y) * (pt.LastPoint.Y - pt1.LastPoint.Y) >= 0)
                     {
                         pth[p].LineTo(pt1.LastPoint);
-                        completedPaths[paint] = pth;
+                        completedPaths[pnt] = pth;
                     }
 
                     if ((pt.GetPoint(0).X - pt1.GetPoint(0).X) * (pt.GetPoint(0).X - pt1.GetPoint(0).X) +
-                        (pt.GetPoint(0).Y - pt1.GetPoint(0).Y) * (pt.GetPoint(0).Y - pt1.GetPoint(0).Y) <= k)
+                        (pt.GetPoint(0).Y - pt1.GetPoint(0).Y) * (pt.GetPoint(0).Y - pt1.GetPoint(0).Y) <= k
+                        && (pt.GetPoint(0).X - pt1.GetPoint(0).X) * (pt.GetPoint(0).X - pt1.GetPoint(0).X) +
+                        (pt.GetPoint(0).Y - pt1.GetPoint(0).Y) * (pt.GetPoint(0).Y - pt1.GetPoint(0).Y) >=0)
                     {
                         SKPath pth2 = new SKPath() { };
                         pth2.MoveTo(pt1.GetPoint(0));
                         pth2.AddPath(pt);
                         pth[p] = pth2;
-                        completedPaths[paint] = pth;
+                        completedPaths[pnt] = pth;
                     }
                 }
 
@@ -173,7 +198,7 @@ namespace TOPOG.Views
         Dictionary<long, SKPath> inProgressPaths = new Dictionary<long, SKPath>();
         Dictionary<long, SKPath> inProgressPathScl = new Dictionary<long, SKPath>();
 
-        Dictionary<SKPaint, List<SKPath>> completedPaths = new Dictionary<SKPaint, List<SKPath>>();
+        Dictionary<CPaintL, List<SKPath>> completedPaths = new Dictionary<CPaintL, List<SKPath>>();
 
         Dictionary<SKPaint, List<SKPoint>> completedPoint = new Dictionary<SKPaint, List<SKPoint>>();
 
@@ -185,6 +210,8 @@ namespace TOPOG.Views
         int count = 0;
         private void TouchEffect_TouchAction(object sender, TouchTracking.TouchActionEventArgs args)
         {
+
+            CPaintL pnt = ((Tuple<int, CPaintL>)App.Current.Properties["Paint"]).Item2;
             if (Name == "")
                 return;
             switch (args.Type)
@@ -209,7 +236,7 @@ namespace TOPOG.Views
                         }
                         else
                         {
-                            type = 0;
+                            type = typel.SelectedIndex-1;
                         }
                         //Toast.MakeText(Android.App.Application.Context, JsonConvert.SerializeObject(paint), ToastLength.Long).Show();
                         canvasView.InvalidateSurface();
@@ -231,9 +258,9 @@ namespace TOPOG.Views
                         canvasView.InvalidateSurface();
                         try
                         {
-                            if (count > 1)
+                            if (type ==-1)
                             {
-                                int dp = 5;
+                                int dp = 2;
                                 float sx = 0, sy = 0, z1x = 0, z1y = 0, z2x = 0, z2y = 0, r1 = 0, r2 = 0, kl = 0;
                                 foreach (long pn in inProgressPaths.Keys)
                                 {
@@ -241,25 +268,32 @@ namespace TOPOG.Views
                                     z1x += inProgressPathScl[pn].GetPoint(inProgressPathScl[pn].PointCount - dp).X;
                                     z2y += inProgressPathScl[pn].LastPoint.Y;
                                     z2x += inProgressPathScl[pn].LastPoint.X;
-                                    sx += inProgressPaths[pn].LastPoint.X - inProgressPaths[pn].GetPoint(inProgressPaths[pn].PointCount - dp).X;
-                                    sy += inProgressPaths[pn].LastPoint.Y - inProgressPaths[pn].GetPoint(inProgressPaths[pn].PointCount - dp).Y;
+                                    sx += inProgressPathScl[pn].LastPoint.X - inProgressPathScl[pn].GetPoint(inProgressPathScl[pn].PointCount - dp).X;
+                                    sy += inProgressPathScl[pn].LastPoint.Y - inProgressPathScl[pn].GetPoint(inProgressPathScl[pn].PointCount - dp).Y;
                                     kl += 1;
                                 }
-                                z1y /= kl;z1x /= kl;z2x /= kl;z2y /= kl;
-                                foreach (long pn in inProgressPaths.Keys)
+                                float ds = 1;
+                                if (count > 1) 
                                 {
-                                    r2 += (float)Math.Sqrt(Math.Pow((double)(inProgressPathScl[pn].LastPoint.Y - z2y), 2d) + Math.Pow((double)(inProgressPathScl[pn].LastPoint.X - z2x), 2));
-                                    r1 += (float)Math.Sqrt(Math.Pow((double)(inProgressPathScl[pn].GetPoint(inProgressPathScl[pn].PointCount - dp).Y - z1y), 2d)
-                                        + Math.Pow((double)(inProgressPathScl[pn].GetPoint(inProgressPathScl[pn].PointCount - dp).X - z1x), 2));
+                                    z1y /= kl; z1x /= kl; z2x /= kl; z2y /= kl;
+                                    foreach (long pn in inProgressPaths.Keys)
+                                    {
+                                        r2 += (float)Math.Sqrt(Math.Pow((double)(inProgressPathScl[pn].LastPoint.Y - z2y), 2d) + Math.Pow((double)(inProgressPathScl[pn].LastPoint.X - z2x), 2));
+                                        r1 += (float)Math.Sqrt(Math.Pow((double)(inProgressPathScl[pn].GetPoint(inProgressPathScl[pn].PointCount - dp).Y - z1y), 2d)
+                                            + Math.Pow((double)(inProgressPathScl[pn].GetPoint(inProgressPathScl[pn].PointCount - dp).X - z1x), 2));
+                                    }
+                                    ds = (float)Math.Round(Math.Max(0.99f, Math.Min(1.01, r2 / r1)), 2);
                                 }
-                                dx += sx / kl / 5;
-                                dy += sy / kl / 5;
-                                float ds = (float)Math.Round(Math.Max(0.99f, Math.Min(1.01, r2 / r1)), 2);
+                                dx += sx/kl/scl;
+                                dy += sy/kl/scl;
+                                
                                 if (scl < 15 || ds<1)
                                 {
                                     scl *= ds;
-                                    dx /= ds;
-                                    dy /= ds;
+                                    dx = dx / ds;// + (canvasView.CanvasSize.Width / scl - dx)/ds/2;
+                                    //dx -=(canvasView.CanvasSize.Width / scl - dx);
+                                    dy = dy / ds;// + (canvasView.CanvasSize.Height / scl - dx)/ds/2;
+                                    //dy -= (canvasView.CanvasSize.Height / scl - dy);
                                 }
                                // foreach (long pn in inProgressPaths.Keys)
                                 //{
@@ -279,9 +313,9 @@ namespace TOPOG.Views
                         {
                             if (type == 0)
                             {
-                                if (!completedPaths.ContainsKey(paint)) completedPaths[paint] = new List<SKPath>();
-                                { completedPaths[paint].Add(inProgressPaths[args.Id]);
-                                    pred.Add(new Tuple<int, object>(1,paint));
+                                if (!completedPaths.ContainsKey(pnt)) completedPaths[pnt] = new List<SKPath>();
+                                { completedPaths[pnt].Add(inProgressPaths[args.Id]);
+                                    pred.Add(new Tuple<int, object>(1,pnt));
                                 }
                                 try
                                 {
@@ -292,18 +326,18 @@ namespace TOPOG.Views
 
                                 }
                             }
-                            if (type == 1)
+                            /*if (type == 1)
                             {
-                                if (!completedShape.ContainsKey(new Tuple<SKPaint, SKPaint>(paint, paint2))) completedShape[new Tuple<SKPaint, SKPaint>(paint, paint2)] = new List<SKPath>();
-                                { completedShape[new Tuple<SKPaint, SKPaint>(paint, paint2)].Add(inProgressPaths[args.Id]); pred.Add(new Tuple<int, object>(2,paintS)); }
+                                if (!completedShape.ContainsKey(new Tuple<SKPaint, SKPaint>(pnt, paint2))) completedShape[new Tuple<SKPaint, SKPaint>(pnt, paint2)] = new List<SKPath>();
+                                { completedShape[new Tuple<SKPaint, SKPaint>(pnt, paint2)].Add(inProgressPaths[args.Id]); pred.Add(new Tuple<int, object>(2,paintS)); }
                             }
                             if (type == 2)
                                 if (inProgressPaths[args.Id].PointCount <= 5)
                                 {
-                                    if (!completedPoint.ContainsKey(paint)) completedPoint[paint] = new List<SKPoint>();
-                                    { completedPoint[paint].Add(inProgressPaths[args.Id].LastPoint); pred.Add(new Tuple<int, object>(3, paint2)); }
+                                    if (!completedPoint.ContainsKey(pnt)) completedPoint[pnt] = new List<SKPoint>();
+                                    { completedPoint[pnt].Add(inProgressPaths[args.Id].LastPoint); pred.Add(new Tuple<int, object>(3, paint2)); }
                                     //Toast.MakeText(Android.App.Application.Context, inProgressPaths[args.Id].PointCount.ToString(), ToastLength.Long).Show();
-                                }
+                                }*/
                         }
                         //completedPathsI.Add(swt.IsToggled);
                         inProgressPaths.Remove(args.Id);
@@ -331,15 +365,15 @@ namespace TOPOG.Views
 
         private void Nazad(object sender, EventArgs e)
         {
-            
+            CPaintL pnt = ((Tuple<int, CPaintL>)App.Current.Properties["Paint"]).Item2;
             if (pred.Count>0)
             {
                 Tuple<int, object> ob = pred[pred.Count - 1];
                 if (ob.Item1 == 1)
-                    if (completedPaths[(SKPaint)ob.Item2].Count > 0)
+                    if (completedPaths[(CPaintL)ob.Item2].Count > 0)
                     {
-                        sled.Add(new Tuple<int, object>(ob.Item1, new Tuple<SKPaint, SKPath>(paint, completedPaths[(SKPaint)ob.Item2][completedPaths[(SKPaint)ob.Item2].Count - 1])));
-                        completedPaths[(SKPaint)ob.Item2].RemoveAt(completedPaths[(SKPaint)ob.Item2].Count - 1);
+                        sled.Add(new Tuple<int, object>(ob.Item1, new Tuple<CPaintL, SKPath>(pnt, completedPaths[(CPaintL)ob.Item2][completedPaths[(CPaintL)ob.Item2].Count - 1])));
+                        completedPaths[(CPaintL)ob.Item2].RemoveAt(completedPaths[(CPaintL)ob.Item2].Count - 1);
                     }
                 pred.Remove(ob);
             }
@@ -353,8 +387,8 @@ namespace TOPOG.Views
                 Tuple<int, object> ob = sled[sled.Count - 1];
                 if (ob.Item1==1)
                 {
-                    pred.Add(new Tuple<int, object>(ob.Item1, ((Tuple<SKPaint, SKPath>)ob.Item2).Item1));
-                    completedPaths[((Tuple<SKPaint, SKPath>)ob.Item2).Item1].Add(((Tuple<SKPaint, SKPath>)ob.Item2).Item2);
+                    pred.Add(new Tuple<int, object>(ob.Item1, ((Tuple<CPaintL, SKPath>)ob.Item2).Item1));
+                    completedPaths[((Tuple<CPaintL, SKPath>)ob.Item2).Item1].Add(((Tuple<CPaintL, SKPath>)ob.Item2).Item2);
                 }
                 sled.Remove(ob);
             }
@@ -379,7 +413,8 @@ namespace TOPOG.Views
                     nsvd = false;
                     abri a = new abri(Name, completedPaths, completedPoint, completedShape);
                     //Toast.MakeText(Android.App.Application.Context, "Clanceled2", ToastLength.Long).Show();
-                    Serial.Save(abris.crt(a), typeof(abris), Serial.ptha(Name));
+                    Serial.Save(abris.crt(a), typeof(abris), Serial.ptha(
+                        ((Semka)App.Current.Properties["Semka"]).Name,Name));
                 }
             }
             if (((Semka)App.Current.Properties["Semka"]).Name == "")
@@ -397,7 +432,7 @@ namespace TOPOG.Views
                     Name = (string)App.Current.Properties["Nm"];
                     
                     abri a = new abri(Name);
-                    if (File.Exists(Serial.ptha(Name)))
+                    if (File.Exists(Serial.ptha(((Semka)App.Current.Properties["Semka"]).Name,Name)))
                         a = abri.getabr(Name);
                     completedPaths = a.Paths;
                     completedPoint = a.Point;
@@ -443,7 +478,7 @@ namespace TOPOG.Views
                 await Task.Delay(100);
             Name = (string)App.Current.Properties["Nm"];
             abri a = new abri(Name);
-            if (File.Exists(Serial.ptha(Name)))
+            if (File.Exists(Serial.ptha(((Semka)App.Current.Properties["Semka"]).Name,Name)))
             { a = abri.getabr(Name);}
            
             completedPaths = a.Paths;

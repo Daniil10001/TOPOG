@@ -15,7 +15,7 @@ namespace TOPOG.Views
             }
             public string name { get; set; }
 
-            public List<SKPaint> PathsK = new List<SKPaint>();
+            public List<CPaintL> PathsK = new List<CPaintL>();
             public List<List<String>> PathsI = new List<List<string>>();
 
             public List<SKPaint> PointK = new List<SKPaint>();
@@ -24,11 +24,11 @@ namespace TOPOG.Views
             public List<Tuple<SKPaint, SKPaint>> ShapeK = new List<Tuple<SKPaint, SKPaint>>();
             public List<List<string>> ShapeI = new List<List<string>>();
             public static abri get(abris a1)
-            {
+            { 
                 abri a = new abri(a1.name);
                 for (int i = 0; i < a1.PathsK.Count; i++)
                 {
-                    a.Paths[a1.PathsK[i]] = new List<SKPath>();
+                    a.Paths[a1.PathsK[i]] = new List<SKPath>(); 
                     foreach (string p in a1.PathsI[i])
                     {
                         a.Paths[a1.PathsK[i]].Add(SKPath.ParseSvgPathData(p));
@@ -51,7 +51,7 @@ namespace TOPOG.Views
             public static abris crt(abri a1)
             {
                 abris a = new abris(a1.name);
-                foreach (SKPaint ob in a1.Paths.Keys)
+                foreach (CPaintL ob in a1.Paths.Keys)
                 {
                     a.PathsK.Add(ob);
                     a.PathsI.Add(new List<string>());

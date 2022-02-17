@@ -55,7 +55,7 @@ namespace TOPOG.Views
             A = 0;
             p = (new SKPath()).ToSvgPathData();
             name = "";
-            sx = 1;
+            sx = 1; 
             sy = 1;
         }
         public CPaintL(byte Rv,byte Gv,byte Bv, byte Av,string namev)

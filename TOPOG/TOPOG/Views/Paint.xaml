@@ -8,7 +8,7 @@
             <ScrollView>
                 <TableView x:Name="table">
                     
-                </TableView> 
+                </TableView>  
             </ScrollView>
         </StackLayout>
     </ContentPage.Content>
